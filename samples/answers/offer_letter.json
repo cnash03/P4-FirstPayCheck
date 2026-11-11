@@ -12,7 +12,7 @@
         "p": "November 2, 2026"
       },
       {
-        "p": "Riley Q. Marchetti<br/>999 Fictional Way, Unit 0<br/>Denver, CO 80299"
+        "p": "Riley Q. Marchetti<br/>999 Fictional Way, Unit 0<br/>Denver, CO 80299<br/>(303) 555-0147<br/>riley.marchetti@example.com"
       },
       {
         "h": "Offer of Employment"
@@ -66,7 +66,9 @@
   "pii": [
     "Riley Q. Marchetti",
     "999 Fictional Way, Unit 0",
-    "Denver, CO 80299"
+    "Denver, CO 80299",
+    "(303) 555-0147",
+    "riley.marchetti@example.com"
   ],
   "fields": [
     {
