@@ -1,0 +1,22 @@
+# Uploaded documents and the SQLite store never leave this machine
+data/
+*.sqlite
+*.sqlite3
+*.db
+
+# Secrets
+.env
+.env.*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Node
+node_modules/
+.next/
+
+# OS
+.DS_Store
