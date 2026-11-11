@@ -1,0 +1,114 @@
+{
+  "schema_version": "0.1",
+  "doc": "pay_stub.pdf",
+  "title": "Earnings Statement",
+  "synthetic": true,
+  "note": "Tax lines are illustrative and are not answers for the paycheck calculator.",
+  "pages": [
+    [
+      {
+        "h": "Front Range Civic Software, Inc.<br/>Earnings Statement"
+      },
+      {
+        "p": "Employee: Riley Q. Marchetti<br/>999 Fictional Way, Unit 0<br/>Denver, CO 80299"
+      },
+      {
+        "p": "Employee ID: FRC-104823<br/>SSN: 900-12-3456"
+      },
+      {
+        "p": "Pay period: January 4, 2027 to January 17, 2027<br/>Pay date: January 22, 2027<br/>Pay frequency: Biweekly"
+      },
+      {
+        "table": [
+          [
+            "Earnings and deductions",
+            "Current",
+            "Year to date"
+          ],
+          [
+            "Regular salary",
+            "$3,461.54",
+            "$3,461.54"
+          ],
+          [
+            "Medical (PPO 750) pre-tax",
+            "$62.00",
+            "$62.00"
+          ],
+          [
+            "401(k) 6% pre-tax",
+            "$207.69",
+            "$207.69"
+          ],
+          [
+            "Federal income tax",
+            "$312.40",
+            "$312.40"
+          ],
+          [
+            "Social Security",
+            "$210.77",
+            "$210.77"
+          ],
+          [
+            "Medicare",
+            "$49.29",
+            "$49.29"
+          ],
+          [
+            "Colorado income tax",
+            "$136.00",
+            "$136.00"
+          ],
+          [
+            "Colorado FAMLI",
+            "$15.23",
+            "$15.23"
+          ],
+          [
+            "Denver occupational privilege tax",
+            "$5.75",
+            "$5.75"
+          ],
+          [
+            "Net pay",
+            "$2,462.41",
+            "$2,462.41"
+          ]
+        ]
+      },
+      {
+        "p": "Direct deposit to checking account ending 0000."
+      }
+    ]
+  ],
+  "pii": [
+    "Riley Q. Marchetti",
+    "999 Fictional Way, Unit 0",
+    "Denver, CO 80299",
+    "FRC-104823",
+    "900-12-3456"
+  ],
+  "fields": [
+    {
+      "id": "pay_stub.pdf:paystub.gross_pay",
+      "name": "paystub.gross_pay",
+      "value": 3461.54,
+      "unit": "usd_per_paycheck",
+      "doc": "pay_stub.pdf",
+      "page": 1,
+      "source_text": "$3,461.54",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "pay_stub.pdf:paystub.pay_date",
+      "name": "paystub.pay_date",
+      "value": "2027-01-22",
+      "unit": "date",
+      "doc": "pay_stub.pdf",
+      "page": 1,
+      "source_text": "January 22, 2027",
+      "status": "unconfirmed"
+    }
+  ]
+}

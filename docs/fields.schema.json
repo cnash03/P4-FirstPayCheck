@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "firstpaycheck/docs/fields.schema.json",
+  "title": "FirstPaycheck extracted fields",
+  "description": "The contract between Documents and retrieval (which writes it) and the financial engine and app (which read it). One file per ingest run. Draft 0.1, built from the Appendix A inputs until the engine's field list arrives. Quiz answers (filing status, city, who is covered, emergency fund, loans, savings goal) are not document fields and are not in here.",
+  "type": "object",
+  "required": ["schema_version", "fields"],
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": { "const": "0.1" },
+    "fields": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/field" }
+    }
+  },
+  "$defs": {
+    "field": {
+      "type": "object",
+      "required": ["id", "name", "value", "unit", "doc", "page", "status"],
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable key: <doc>:<name>[:<plan>][:<coverage_tier>]. confirm_field() takes this."
+        },
+        "name": { "$ref": "#/$defs/field_name" },
+        "value": {
+          "description": "Typed by unit: number for usd_* / percent / months, string for date (YYYY-MM-DD) and enum, boolean for boolean, array of tiers for match_tiers.",
+          "type": ["number", "string", "boolean", "array"]
+        },
+        "unit": {
+          "enum": [
+            "usd_per_year",
+            "usd_per_paycheck",
+            "percent",
+            "months",
+            "date",
+            "boolean",
+            "enum",
+            "match_tiers"
+          ],
+          "description": "percent is 0-100, so 6 means 6%."
+        },
+        "plan": {
+          "type": "string",
+          "description": "Health plan name as the guide writes it, e.g. \"HDHP with HSA\". Only on health.* fields."
+        },
+        "coverage_tier": {
+          "enum": ["employee_only", "employee_spouse", "employee_children", "family"],
+          "description": "Only on health.* fields whose amount depends on who is covered."
+        },
+        "doc": {
+          "type": "string",
+          "description": "File name of the source document, e.g. benefits_guide.pdf."
+        },
+        "page": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "1-based page the value was read from; the app links to get_page(doc, page)."
+        },
+        "source_text": {
+          "type": "string",
+          "description": "The redacted line the value came from, shown on the confirmation screen."
+        },
+        "status": {
+          "enum": ["unconfirmed", "confirmed"],
+          "description": "Every field starts unconfirmed. No calculator runs on an unconfirmed field."
+        }
+      }
+    },
+    "field_name": {
+      "oneOf": [
+        { "const": "offer.annual_salary", "description": "usd_per_year. Offer letter. Example 1." },
+        { "const": "offer.pay_frequency", "description": "enum: weekly | biweekly | semimonthly | monthly. Offer letter. Example 1." },
+        { "const": "offer.start_date", "description": "date. Offer letter. Sets the first check and the enrollment window." },
+
+        { "const": "health.plan_type", "description": "enum: hdhp | ppo | hmo | epo. Benefits guide, one per plan. Example 2." },
+        { "const": "health.premium", "description": "usd_per_paycheck, employee share. Benefits guide, per plan and coverage tier. Example 2." },
+        { "const": "health.deductible", "description": "usd_per_year. Benefits guide, per plan and coverage tier. Example 2." },
+        { "const": "health.out_of_pocket_max", "description": "usd_per_year. Benefits guide, per plan and coverage tier. Needed for Example 2's high-use year." },
+        { "const": "health.employer_hsa_contribution", "description": "usd_per_year. Benefits guide, HSA-eligible plans only, per coverage tier. Example 2." },
+
+        { "const": "retirement.match_tiers", "description": "match_tiers: [{\"match_percent\": 100, \"up_to_percent_of_pay\": 6}], one entry per tier. Benefits guide. Examples 3 and 5." },
+
+        { "const": "espp.discount_percent", "description": "percent. Benefits guide. Example 4." },
+        { "const": "espp.lookback", "description": "boolean: price is the lower of offering start and purchase date. Benefits guide. Example 4." },
+        { "const": "espp.offering_period_months", "description": "months. Benefits guide. Example 4." },
+        { "const": "espp.holding_period_months", "description": "months, 0 when there is none. Benefits guide. Example 4's hard case." },
+        { "const": "espp.max_contribution_percent", "description": "percent of pay. Benefits guide. Example 4's dollar gain." },
+
+        { "const": "enrollment.deadline", "description": "date. Benefits guide. The app's deadline checklist." },
+
+        { "const": "paystub.gross_pay", "description": "usd_per_paycheck. Pay stub. Cross-checks salary / pay frequency in Example 1." },
+        { "const": "paystub.pay_date", "description": "date. Pay stub. Cross-checks pay frequency." }
+      ]
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "0.1",
+      "fields": [
+        {
+          "id": "offer_letter.pdf:offer.annual_salary",
+          "name": "offer.annual_salary",
+          "value": 90000,
+          "unit": "usd_per_year",
+          "doc": "offer_letter.pdf",
+          "page": 1,
+          "source_text": "Your starting annual base salary will be $90,000.",
+          "status": "unconfirmed"
+        },
+        {
+          "id": "benefits_guide.pdf:health.deductible:HDHP with HSA:employee_only",
+          "name": "health.deductible",
+          "value": 3200,
+          "unit": "usd_per_year",
+          "plan": "HDHP with HSA",
+          "coverage_tier": "employee_only",
+          "doc": "benefits_guide.pdf",
+          "page": 4,
+          "status": "unconfirmed"
+        },
+        {
+          "id": "benefits_guide.pdf:retirement.match_tiers",
+          "name": "retirement.match_tiers",
+          "value": [{ "match_percent": 100, "up_to_percent_of_pay": 6 }],
+          "unit": "match_tiers",
+          "doc": "benefits_guide.pdf",
+          "page": 7,
+          "status": "confirmed"
+        }
+      ]
+    }
+  ]
+}

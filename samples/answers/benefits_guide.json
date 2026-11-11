@@ -1,0 +1,647 @@
+{
+  "schema_version": "0.1",
+  "doc": "benefits_guide.pdf",
+  "title": "2027 Benefits Guide",
+  "synthetic": true,
+  "pages": [
+    [
+      {
+        "h": "Front Range Civic Software, Inc.<br/>2027 Benefits Guide"
+      },
+      {
+        "p": "For new hires starting January 2027 and for open enrollment in November 2027."
+      },
+      {
+        "h": "Contents"
+      },
+      {
+        "p": "2 Eligibility and enrollment<br/>3 Medical plans at a glance<br/>4 Medical plan costs<br/>5 Health Savings Account (HSA)<br/>6 FSA, dental and vision<br/>7 401(k) retirement plan<br/>8 Employee Stock Purchase Plan (ESPP)<br/>9 Life and disability insurance<br/>10 Contacts and glossary"
+      }
+    ],
+    [
+      {
+        "h": "Eligibility and enrollment"
+      },
+      {
+        "p": "Full-time employees scheduled for 30 or more hours a week are eligible on their first day. You may cover your spouse or domestic partner and your children to age 26."
+      },
+      {
+        "p": "New hires have 30 days from their start date to enroll. For the January 4, 2027 new-hire cohort, the enrollment deadline is February 3, 2027. Coverage is retroactive to your start date."
+      },
+      {
+        "p": "If you miss the deadline, you can change your elections only at open enrollment each November, or within 30 days of a qualifying life event such as marriage, birth or adoption, or losing other coverage."
+      }
+    ],
+    [
+      {
+        "h": "Medical plans at a glance"
+      },
+      {
+        "p": "We offer three medical plans through the same national carrier network. All three cover the same services, and in-network preventive care is free on every plan."
+      },
+      {
+        "p": "PPO 750: the highest paycheck cost and the lowest deductible. Copays for office visits start right away."
+      },
+      {
+        "p": "PPO 1500: a middle option, with a lower paycheck cost and a higher deductible."
+      },
+      {
+        "p": "HDHP with HSA: the lowest paycheck cost and the highest deductible. It is the only plan that lets you open a Health Savings Account, and the company adds money to it (see page 5)."
+      }
+    ],
+    [
+      {
+        "h": "Medical plan costs"
+      },
+      {
+        "p": "Premiums below are your share, taken from each of your 26 biweekly paychecks before taxes."
+      },
+      {
+        "table": [
+          [
+            "Biweekly employee cost",
+            "PPO 750",
+            "PPO 1500",
+            "HDHP with HSA"
+          ],
+          [
+            "Employee only",
+            "$62.00",
+            "$38.00",
+            "$18.00"
+          ],
+          [
+            "Employee + spouse",
+            "$148.00",
+            "$102.00",
+            "$64.00"
+          ],
+          [
+            "Employee + children",
+            "$128.00",
+            "$88.00",
+            "$55.00"
+          ],
+          [
+            "Family",
+            "$215.00",
+            "$160.00",
+            "$104.00"
+          ],
+          [
+            "Deductible, employee only",
+            "$750",
+            "$1,500",
+            "$3,400"
+          ],
+          [
+            "Deductible, family",
+            "$1,500",
+            "$3,000",
+            "$6,800"
+          ],
+          [
+            "Out-of-pocket max, employee only",
+            "$3,500",
+            "$5,000",
+            "$6,500"
+          ],
+          [
+            "Out-of-pocket max, family",
+            "$7,000",
+            "$10,000",
+            "$13,000"
+          ],
+          [
+            "Coinsurance after deductible",
+            "20%",
+            "20%",
+            "10%"
+          ]
+        ]
+      },
+      {
+        "p": "Family deductibles and out-of-pocket maximums apply to every tier that covers a dependent."
+      }
+    ],
+    [
+      {
+        "h": "Health Savings Account (HSA)"
+      },
+      {
+        "p": "If you enroll in the HDHP with HSA, the company contributes to your HSA each year: $500 per year for employee-only coverage, or $1,000 per year for any tier that covers a dependent. The company contribution is deposited in equal amounts each paycheck."
+      },
+      {
+        "p": "You can add your own pre-tax money up to the annual IRS limit, which includes the company's contribution. See irs.gov for the current year's limit."
+      },
+      {
+        "p": "An HSA has three tax benefits: money goes in before tax, grows without tax, and comes out without tax for qualified medical expenses. The account is yours to keep if you leave the company."
+      }
+    ],
+    [
+      {
+        "h": "Flexible Spending Account (FSA)"
+      },
+      {
+        "p": "PPO members can set aside pre-tax money in a health care FSA, up to the annual IRS limit. Unused FSA money above the carryover amount is lost at the end of the plan year. You cannot have a health care FSA and an HSA at the same time."
+      },
+      {
+        "h": "Dental and vision"
+      },
+      {
+        "p": "Dental: $50 deductible, preventive cleanings covered at 100%, $1,500 annual maximum. Biweekly cost: $4.50 employee only, $12.00 family."
+      },
+      {
+        "p": "Vision: $10 exam copay, $150 frame allowance every 24 months. Biweekly cost: $1.80 employee only, $4.75 family."
+      }
+    ],
+    [
+      {
+        "h": "401(k) retirement plan"
+      },
+      {
+        "p": "You can save from 1% to 75% of your eligible pay in the 401(k), as traditional pre-tax, Roth after-tax, or both, up to the annual IRS limit."
+      },
+      {
+        "p": "Company match: the company contributes 50 cents for every dollar you contribute, on the first 6% of your eligible pay. To receive the full match, which equals 3% of your pay, you must contribute at least 6%."
+      },
+      {
+        "p": "Automatic enrollment: new hires are enrolled at 3% of pay unless they choose a different rate within 30 days."
+      },
+      {
+        "p": "Vesting: your own contributions are always 100% yours. Company match contributions vest 20% per year of service and are fully vested after 5 years."
+      }
+    ],
+    [
+      {
+        "h": "Employee Stock Purchase Plan (ESPP)"
+      },
+      {
+        "p": "The ESPP lets you buy company stock at a 15% discount through payroll deductions. You may contribute 1% to 15% of your eligible pay, after taxes."
+      },
+      {
+        "p": "The plan has six-month offering periods, starting January 1 and July 1. Shares are bought on the last trading day of each period."
+      },
+      {
+        "p": "The plan includes a lookback: the purchase price is 85% of the lower of the stock price on the first day or the last day of the offering period."
+      },
+      {
+        "p": "Holding period: shares bought through the ESPP cannot be sold for 180 days after the purchase date."
+      },
+      {
+        "p": "You cannot buy more than $25,000 of stock, valued at the start of each offering period, in any calendar year, or more than 750 shares in any one offering period."
+      }
+    ],
+    [
+      {
+        "h": "Life and disability insurance"
+      },
+      {
+        "p": "Basic life insurance of one times your annual salary is provided at no cost. You may buy supplemental life coverage for yourself, your spouse, and your children."
+      },
+      {
+        "p": "Short-term disability pays 60% of your salary for up to 12 weeks, after a 7-day waiting period, at no cost to you. Long-term disability pays 60% of your salary, up to $10,000 a month, after 90 days."
+      }
+    ],
+    [
+      {
+        "h": "Contacts"
+      },
+      {
+        "p": "Benefits questions: People Operations, benefits@frontrange-civic.example"
+      },
+      {
+        "h": "Glossary"
+      },
+      {
+        "p": "Premium: what you pay each paycheck to have the plan.<br/>Deductible: what you pay for care each year before the plan starts paying.<br/>Out-of-pocket maximum: the most you pay for covered care in a year.<br/>Coinsurance: your share of a bill after the deductible.<br/>Vesting: when company contributions become yours to keep."
+      },
+      {
+        "p": "This guide is a summary. If it differs from the official plan documents, the plan documents govern. Confirm your choices with People Operations or a licensed advisor."
+      }
+    ]
+  ],
+  "pii": [],
+  "fields": [
+    {
+      "id": "benefits_guide.pdf:health.plan_type:PPO 750",
+      "name": "health.plan_type",
+      "value": "ppo",
+      "unit": "enum",
+      "plan": "PPO 750",
+      "doc": "benefits_guide.pdf",
+      "page": 3,
+      "source_text": "PPO 750",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 750:employee_only",
+      "name": "health.premium",
+      "value": 62.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 750",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$62.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 750:employee_spouse",
+      "name": "health.premium",
+      "value": 148.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 750",
+      "coverage_tier": "employee_spouse",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$148.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 750:employee_children",
+      "name": "health.premium",
+      "value": 128.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 750",
+      "coverage_tier": "employee_children",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$128.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 750:family",
+      "name": "health.premium",
+      "value": 215.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 750",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$215.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.deductible:PPO 750:employee_only",
+      "name": "health.deductible",
+      "value": 750,
+      "unit": "usd_per_year",
+      "plan": "PPO 750",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$750",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.out_of_pocket_max:PPO 750:employee_only",
+      "name": "health.out_of_pocket_max",
+      "value": 3500,
+      "unit": "usd_per_year",
+      "plan": "PPO 750",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$3,500",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.deductible:PPO 750:family",
+      "name": "health.deductible",
+      "value": 1500,
+      "unit": "usd_per_year",
+      "plan": "PPO 750",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$1,500",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.out_of_pocket_max:PPO 750:family",
+      "name": "health.out_of_pocket_max",
+      "value": 7000,
+      "unit": "usd_per_year",
+      "plan": "PPO 750",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$7,000",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.plan_type:PPO 1500",
+      "name": "health.plan_type",
+      "value": "ppo",
+      "unit": "enum",
+      "plan": "PPO 1500",
+      "doc": "benefits_guide.pdf",
+      "page": 3,
+      "source_text": "PPO 1500",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 1500:employee_only",
+      "name": "health.premium",
+      "value": 38.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 1500",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$38.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 1500:employee_spouse",
+      "name": "health.premium",
+      "value": 102.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 1500",
+      "coverage_tier": "employee_spouse",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$102.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 1500:employee_children",
+      "name": "health.premium",
+      "value": 88.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 1500",
+      "coverage_tier": "employee_children",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$88.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:PPO 1500:family",
+      "name": "health.premium",
+      "value": 160.0,
+      "unit": "usd_per_paycheck",
+      "plan": "PPO 1500",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$160.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.deductible:PPO 1500:employee_only",
+      "name": "health.deductible",
+      "value": 1500,
+      "unit": "usd_per_year",
+      "plan": "PPO 1500",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$1,500",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.out_of_pocket_max:PPO 1500:employee_only",
+      "name": "health.out_of_pocket_max",
+      "value": 5000,
+      "unit": "usd_per_year",
+      "plan": "PPO 1500",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$5,000",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.deductible:PPO 1500:family",
+      "name": "health.deductible",
+      "value": 3000,
+      "unit": "usd_per_year",
+      "plan": "PPO 1500",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$3,000",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.out_of_pocket_max:PPO 1500:family",
+      "name": "health.out_of_pocket_max",
+      "value": 10000,
+      "unit": "usd_per_year",
+      "plan": "PPO 1500",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$10,000",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.plan_type:HDHP with HSA",
+      "name": "health.plan_type",
+      "value": "hdhp",
+      "unit": "enum",
+      "plan": "HDHP with HSA",
+      "doc": "benefits_guide.pdf",
+      "page": 3,
+      "source_text": "HDHP with HSA",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:HDHP with HSA:employee_only",
+      "name": "health.premium",
+      "value": 18.0,
+      "unit": "usd_per_paycheck",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$18.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:HDHP with HSA:employee_spouse",
+      "name": "health.premium",
+      "value": 64.0,
+      "unit": "usd_per_paycheck",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "employee_spouse",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$64.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:HDHP with HSA:employee_children",
+      "name": "health.premium",
+      "value": 55.0,
+      "unit": "usd_per_paycheck",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "employee_children",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$55.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:HDHP with HSA:family",
+      "name": "health.premium",
+      "value": 104.0,
+      "unit": "usd_per_paycheck",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$104.00",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.deductible:HDHP with HSA:employee_only",
+      "name": "health.deductible",
+      "value": 3400,
+      "unit": "usd_per_year",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$3,400",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.out_of_pocket_max:HDHP with HSA:employee_only",
+      "name": "health.out_of_pocket_max",
+      "value": 6500,
+      "unit": "usd_per_year",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$6,500",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.deductible:HDHP with HSA:family",
+      "name": "health.deductible",
+      "value": 6800,
+      "unit": "usd_per_year",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$6,800",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.out_of_pocket_max:HDHP with HSA:family",
+      "name": "health.out_of_pocket_max",
+      "value": 13000,
+      "unit": "usd_per_year",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "$13,000",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.employer_hsa_contribution:HDHP with HSA:employee_only",
+      "name": "health.employer_hsa_contribution",
+      "value": 500,
+      "unit": "usd_per_year",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 5,
+      "source_text": "$500 per year",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.employer_hsa_contribution:HDHP with HSA:family",
+      "name": "health.employer_hsa_contribution",
+      "value": 1000,
+      "unit": "usd_per_year",
+      "plan": "HDHP with HSA",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 5,
+      "source_text": "$1,000 per year",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:retirement.match_tiers",
+      "name": "retirement.match_tiers",
+      "value": [
+        {
+          "match_percent": 50,
+          "up_to_percent_of_pay": 6
+        }
+      ],
+      "unit": "match_tiers",
+      "doc": "benefits_guide.pdf",
+      "page": 7,
+      "source_text": "50 cents for every dollar you contribute, on the first 6% of your eligible pay",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:espp.discount_percent",
+      "name": "espp.discount_percent",
+      "value": 15,
+      "unit": "percent",
+      "doc": "benefits_guide.pdf",
+      "page": 8,
+      "source_text": "15% discount",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:espp.lookback",
+      "name": "espp.lookback",
+      "value": true,
+      "unit": "boolean",
+      "doc": "benefits_guide.pdf",
+      "page": 8,
+      "source_text": "lookback",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:espp.offering_period_months",
+      "name": "espp.offering_period_months",
+      "value": 6,
+      "unit": "months",
+      "doc": "benefits_guide.pdf",
+      "page": 8,
+      "source_text": "six-month offering periods",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:espp.holding_period_months",
+      "name": "espp.holding_period_months",
+      "value": 6,
+      "unit": "months",
+      "doc": "benefits_guide.pdf",
+      "page": 8,
+      "source_text": "180 days",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:espp.max_contribution_percent",
+      "name": "espp.max_contribution_percent",
+      "value": 15,
+      "unit": "percent",
+      "doc": "benefits_guide.pdf",
+      "page": 8,
+      "source_text": "1% to 15% of your eligible pay",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:enrollment.deadline",
+      "name": "enrollment.deadline",
+      "value": "2027-02-03",
+      "unit": "date",
+      "doc": "benefits_guide.pdf",
+      "page": 2,
+      "source_text": "February 3, 2027",
+      "status": "unconfirmed"
+    }
+  ]
+}

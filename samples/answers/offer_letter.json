@@ -1,0 +1,103 @@
+{
+  "schema_version": "0.1",
+  "doc": "offer_letter.pdf",
+  "title": "Offer of Employment",
+  "synthetic": true,
+  "pages": [
+    [
+      {
+        "p": "Front Range Civic Software, Inc. | 1600 Placeholder Plaza, Denver, CO 80202"
+      },
+      {
+        "p": "November 2, 2026"
+      },
+      {
+        "p": "Riley Q. Marchetti<br/>999 Fictional Way, Unit 0<br/>Denver, CO 80299"
+      },
+      {
+        "h": "Offer of Employment"
+      },
+      {
+        "p": "Dear Riley Q. Marchetti,"
+      },
+      {
+        "p": "We are pleased to offer you the position of Associate Software Engineer with Front Range Civic Software, Inc., reporting to the Engineering Manager, Public Sector Platforms, in our Denver office."
+      },
+      {
+        "p": "Your first day of employment will be Monday, January 4, 2027."
+      },
+      {
+        "p": "Your starting annual base salary will be $90,000, less applicable taxes and withholdings."
+      },
+      {
+        "p": "You will be paid biweekly, every other Friday, for a total of 26 paychecks per year, by direct deposit."
+      },
+      {
+        "p": "This is a full-time, exempt position under the Fair Labor Standards Act."
+      }
+    ],
+    [
+      {
+        "h": "Benefits"
+      },
+      {
+        "p": "You are eligible for medical, dental, vision, 401(k), and Employee Stock Purchase Plan benefits starting on your first day. Details are in the enclosed 2027 Benefits Guide."
+      },
+      {
+        "p": "You must make your benefit elections within 30 days of your start date. If you do not enroll by then, you will have no medical coverage until the next open enrollment."
+      },
+      {
+        "h": "Acceptance"
+      },
+      {
+        "p": "This offer is contingent on a background check and proof of eligibility to work in the United States. Employment with the company is at will."
+      },
+      {
+        "p": "Please sign below to accept this offer by November 16, 2026."
+      },
+      {
+        "p": "Sincerely,<br/>People Operations Team<br/>Front Range Civic Software, Inc."
+      },
+      {
+        "p": "Accepted: ______________________________ Date: ______________"
+      }
+    ]
+  ],
+  "pii": [
+    "Riley Q. Marchetti",
+    "999 Fictional Way, Unit 0",
+    "Denver, CO 80299"
+  ],
+  "fields": [
+    {
+      "id": "offer_letter.pdf:offer.annual_salary",
+      "name": "offer.annual_salary",
+      "value": 90000,
+      "unit": "usd_per_year",
+      "doc": "offer_letter.pdf",
+      "page": 1,
+      "source_text": "$90,000",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "offer_letter.pdf:offer.pay_frequency",
+      "name": "offer.pay_frequency",
+      "value": "biweekly",
+      "unit": "enum",
+      "doc": "offer_letter.pdf",
+      "page": 1,
+      "source_text": "paid biweekly",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "offer_letter.pdf:offer.start_date",
+      "name": "offer.start_date",
+      "value": "2027-01-04",
+      "unit": "date",
+      "doc": "offer_letter.pdf",
+      "page": 1,
+      "source_text": "January 4, 2027",
+      "status": "unconfirmed"
+    }
+  ]
+}
