@@ -1,0 +1,64 @@
+name: eval
+
+# checks: free, on every push to main and every PR. Tests, case checks, and the eval
+#         with the stub agent (proves the grading works; no API calls).
+# agent-eval: costs API tokens, so only on pushes to main and when started by hand
+#         (Actions tab -> eval -> Run workflow). Runs the real agent and the no-tools baseline
+#         once agent/run.py exists and the ANTHROPIC_API_KEY secret is set; skips otherwise.
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Tests
+        run: pytest
+      - name: Case checks
+        run: python eval/cases.py
+      - name: Eval with the stub agent
+        run: python eval/run.py --agent stub --judge stub --mode agent --min-pass-rate 1.0
+
+  agent-eval:
+    needs: checks
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/main')
+    runs-on: ubuntu-latest
+    env:
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.12"
+          cache: pip
+      - run: pip install -r requirements.txt
+      - name: Agent vs. no-tools baseline
+        run: |
+          if [ ! -f agent/run.py ]; then
+            echo "Skipped: agent/run.py is not built yet." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [ -z "$ANTHROPIC_API_KEY" ]; then
+            echo "::warning::ANTHROPIC_API_KEY secret is not set; skipping the agent eval."
+            exit 0
+          fi
+          python eval/run.py --agent cli --judge claude
+      - uses: actions/upload-artifact@v7
+        if: always()
+        with:
+          name: eval-results
+          path: eval/results/
+          if-no-files-found: ignore

@@ -1,12 +1,61 @@
 # Evaluation cases
 
 The test set for FirstPaycheck: each case is a question a new hire asks, plus the answer the user
-confirmed. `eval/run.py` (coming Nov 16–22) runs every case through the agent and the no-tools
-baseline. A case passes when **every graded figure is within its tolerance** ($1 for dollar
-amounts) and **the answer covers every `must_include` point** without any `must_not_include` one.
+confirmed. `eval/run.py` runs every case through the agent and the no-tools baseline. A case
+passes when:
 
-    python eval/cases.py      # list cases and any problems
-    pytest tests/eval         # the same checks, run on every push
+- **every graded figure** appears in the answer within its tolerance ($1 for dollar amounts),
+- **every `must_include` point** is covered and no `must_not_include` one appears (judged by
+  Claude Haiku 5.5), and
+- (agent only) **every expected tool was called**, and no calculator ran when inputs were missing.
+
+```
+python eval/cases.py                          # list cases and any problems (free)
+pytest tests/eval                             # the same checks plus the grading tests (free)
+python eval/run.py --agent stub --judge stub  # whole pipeline with a stub agent (free)
+python eval/run.py                            # real agent + Haiku judge (needs agent/run.py and an API key)
+```
+
+`run.py` prints a pass rate per analysis for the agent and the baseline, and the average and
+most expensive question by token cost. Full answers, verdicts and token counts go to
+`eval/results/` (git-ignored). Use `--cases ex1 ex4-espp` to run a few cases,
+`--mode agent` to skip the baseline, and `--min-pass-rate 0.8` to fail below a threshold.
+
+## GitHub Actions (`.github/workflows/eval.yml`)
+
+| Job | When | What | Costs tokens? |
+|---|---|---|---|
+| `checks` | every PR, every push to main | `pytest`, `eval/cases.py`, `eval/run.py` with the stub agent | No |
+| `agent-eval` | push to main, or **Actions → eval → Run workflow** | real agent vs. no-tools baseline, Haiku judge; report in the job summary, results as an artifact | Yes |
+
+`agent-eval` skips itself until `agent/run.py` exists and the repo has an `ANTHROPIC_API_KEY`
+secret (Settings → Secrets and variables → Actions).
+
+## What `eval/run.py` needs from `agent/run.py`
+
+`eval/agents.py` calls the agent like this; `tests/eval/test_run.py::test_cli_agent_contract` checks it
+with a fake agent:
+
+```
+python agent/run.py "<question>" --docs <folder> --profile <profile.json> --log <log.json> [--no-tools]
+```
+
+- `--docs`: a folder holding only this case's documents.
+- `--profile`: the quiz answers as JSON (the case's profile after overrides).
+- `--no-tools`: the baseline (same model, documents only, no calculators).
+- `--log`: write this JSON there and exit 0:
+
+```json
+{
+  "answer": "text shown to the new hire",
+  "tool_calls": [{"name": "paycheck", "args": {}, "result": {}}],
+  "usage": [{"model": "claude-haiku-5-5", "input_tokens": 1234, "output_tokens": 210}]
+}
+```
+
+One `usage` entry per model call. Tool names should match the cases' `tools` lists:
+`search_documents`, `paycheck`, `benefits_cost`, `contribution_order`, `espp`, `loan_vs_invest`,
+`offer_compare`.
 
 ## Files
 
@@ -16,6 +65,8 @@ amounts) and **the answer covers every `must_include` point** without any `must_
 | `case.schema.json` | What a case can contain; every field is described there. |
 | `profiles/default.json` | The synthetic new hire most cases use (single, Denver, PPO 750, 6% 401(k)). |
 | `cases.py` | `load_cases()` for the runner, `check_case()` for the tests. |
+| `run.py`, `agents.py`, `judge.py` | The runner, the agents it can ask (real or stub), and the judges. |
+| `pricing.json` | Token prices for the cost report, with source and date checked. |
 | `edge_cases.md` | Edge cases for each example, and which ones are already cases. |
 
 ## The cases so far
