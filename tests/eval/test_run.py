@@ -108,6 +108,18 @@ def test_cost_uses_pricing_file():
     assert run.cost_of([{"model": "unknown", "input_tokens": 5, "output_tokens": 5}]) == 0
 
 
+def test_unpriced_model_is_flagged_in_the_report():
+    def other_model(case, no_tools):
+        result = agents.stub_agent(case, no_tools)
+        result["usage"] = [{"model": "claude-sonnet-5-5", "input_tokens": 1000, "output_tokens": 100}]
+        return result
+    row = run.run_case(BY_ID["ex1-take-home"], other_model, run.JUDGES["stub"], no_tools=False)
+    assert row["unpriced_models"] == ["claude-sonnet-5-5"]
+    assert "Costs are incomplete" in run.report([row], [], "cli", "stub")
+    clean = run.run_case(BY_ID["ex1-take-home"], agents.stub_agent, run.JUDGES["stub"], no_tools=False)
+    assert "Costs are incomplete" not in run.report([clean], [], "stub", "stub")
+
+
 # ---- the Claude judge, with a fake client ----
 
 class FakeClient:

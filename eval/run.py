@@ -95,6 +95,12 @@ def cost_of(usage):
     return total
 
 
+def unpriced_models(usage):
+    """Models in the usage that eval/pricing.json has no price for (counted as $0 by cost_of)."""
+    return sorted({u.get("model") or "(no model given)" for u in usage
+                   if u.get("model") not in PRICING["models"]})
+
+
 def tokens_of(usage):
     return sum(u.get("input_tokens", 0) for u in usage), sum(u.get("output_tokens", 0) for u in usage)
 
@@ -136,6 +142,7 @@ def run_case(case, ask, judge, no_tools):
         "output_tokens": tout,
         "cost_usd": round(cost_of(result["usage"]), 6),
         "judge_cost_usd": round(cost_of(judge_usage), 6),
+        "unpriced_models": unpriced_models(result["usage"] + judge_usage),
     }
 
 
@@ -168,6 +175,10 @@ def report(rows, skipped, agent_name, judge_name):
     judge_total = sum(r.get("judge_cost_usd", 0) for r in rows)
     lines += ["", f"Judge cost for the whole run: ${judge_total:.4f}. Prices from eval/pricing.json "
                   f"(checked {PRICING['checked']})."]
+    unpriced = sorted({m for r in rows for m in r.get("unpriced_models", [])})
+    if unpriced:
+        lines += ["", f"> **Costs are incomplete:** no price in eval/pricing.json for {', '.join(unpriced)}. "
+                      "Those calls are counted as $0 above. Add the model's prices and rerun."]
 
     failed = [r for r in rows if not r["passed"]]
     if failed:
