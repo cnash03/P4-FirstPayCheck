@@ -1,0 +1,14 @@
+{
+  "_about": "Dollars per million tokens, for the cost report. Check the source before trusting a report and update 'checked' when you do.",
+  "source": "https://platform.claude.com/docs/en/about-claude/pricing",
+  "checked": "2026-11-03",
+  "models": {
+    "claude-haiku-5-5": {
+      "input_per_mtok": 0.10,
+      "output_per_mtok": 0.50,
+      "long_prompt_over_tokens": 100000,
+      "long_input_per_mtok": 0.50,
+      "long_output_per_mtok": 2.50
+    }
+  }
+}

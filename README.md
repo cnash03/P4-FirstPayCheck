@@ -17,7 +17,7 @@ HR or a licensed advisor.
 - **Financial engine and agent** (`engine/`, `agent/`): deterministic, tested calculators and a
   Haiku 5.5 tool-calling loop on top of them.
 - **Evaluation** (`eval/`): the judged test set, agent vs no-tools baseline, cost per task, run in
-  GitHub Actions. Cases live one per file in `eval/cases/`; see `eval/README.md` to add one.
+  GitHub Actions. Cases live one per file in `eval/cases/`; see `eval/README.md` to add one or run it.
 
 Everything runs on localhost. Uploaded documents stay in the git-ignored `data/` folder.
 
