@@ -1,0 +1,39 @@
+{
+  "id": "ex4-espp-no-emergency-fund",
+  "example": 4,
+  "variant_of": "ex4-espp",
+  "analysis": "espp",
+  "question": "We can buy company stock at a 15% discount. Should I?",
+  "source": "edge case: proposal hard case, second trigger",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["offer_letter.pdf", "benefits_guide.pdf"],
+  "profile": "default",
+  "profile_overrides": { "emergency_fund_months": 0 },
+  "fields": [
+    "offer_letter.pdf:offer.annual_salary",
+    "benefits_guide.pdf:espp.discount_percent",
+    "benefits_guide.pdf:espp.holding_period_months"
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary", "value": 90000, "unit": "usd_per_year", "graded": false, "from_field": "offer_letter.pdf:offer.annual_salary" },
+      { "id": "discount_percent", "label": "ESPP discount", "value": 15, "unit": "percent", "graded": false, "from_field": "benefits_guide.pdf:espp.discount_percent" },
+      { "id": "espp_per_check", "label": "After-tax ESPP deduction per check at 10%", "value": 346.15, "unit": "usd_per_paycheck", "derivation": "annual_salary / 26 * 0.10" },
+      { "id": "built_in_return", "label": "Built-in return on money in", "value": 17.65, "unit": "percent", "tolerance": 0.1, "derivation": "100 * discount_percent / (100 - discount_percent)" }
+    ],
+    "must_include": [
+      "Recommends building an emergency fund before joining the ESPP, because ESPP money is locked up until the purchase date and then for 180 days.",
+      "Still explains the built-in gain from the 15% discount (about 17.6% if the price is flat).",
+      "Mentions the holding period and the risk of owning your employer's stock.",
+      "Says the 401(k) match still comes first."
+    ],
+    "must_not_include": [
+      "always buy",
+      "Joining the ESPP at 10% or more of pay before having any emergency fund."
+    ],
+    "citations": [{ "doc": "benefits_guide.pdf", "page": 8 }],
+    "tools": ["search_documents", "espp"]
+  },
+  "assumptions": ["Same as ex4-espp, but the profile has no emergency fund. Both hard-case triggers apply."]
+}

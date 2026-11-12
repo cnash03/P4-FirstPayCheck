@@ -1,0 +1,27 @@
+{
+  "id": "ex1-unconfirmed-salary",
+  "example": 1,
+  "variant_of": "ex1-take-home",
+  "analysis": "paycheck",
+  "question": "What actually hits my account every two weeks?",
+  "source": "edge case: proposal agent rule (asks for unconfirmed fields)",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["benefits_guide.pdf"],
+  "profile": "default",
+  "fields": ["benefits_guide.pdf:health.premium:PPO 750:employee_only"],
+  "expected": {
+    "figures": [],
+    "must_include": [
+      "Asks the user for their salary (or to upload and confirm the offer letter) before calculating.",
+      "Does not state a net pay figure."
+    ],
+    "must_not_include": [
+      "Any net pay or withholding figure computed from a guessed salary."
+    ],
+    "tools": ["search_documents"],
+    "asks_for": ["offer.annual_salary", "offer.pay_frequency"]
+  },
+  "assumptions": ["No offer letter uploaded, so salary and pay frequency are missing. The agent must ask, not guess."],
+  "notes": "Grading: passes if the paycheck tool is not called and the answer asks for the salary."
+}

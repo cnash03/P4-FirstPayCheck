@@ -1,0 +1,60 @@
+{
+  "id": "ex2-tyler-hdhp-vs-ppo",
+  "example": 2,
+  "variant_of": "ex2-hdhp-vs-ppo",
+  "analysis": "benefits_cost",
+  "question": "Should I pick the high-deductible plan with an HSA or the PPO? I rarely see a doctor.",
+  "source": "proposal Appendix A, on the Tyler 2026 U.S. Compensation & Benefits Summary",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["tyler_2026_benefits_summary.pdf"],
+  "profile": "default",
+  "fields": [
+    { "id": "tyler_2026_benefits_summary.pdf:health.premium:PPO 750:employee_only", "name": "health.premium", "value": 69.30, "unit": "usd_per_paycheck", "plan": "PPO 750", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.premium:PPO 1500:employee_only", "name": "health.premium", "value": 34.65, "unit": "usd_per_paycheck", "plan": "PPO 1500", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.premium:HDHP With HSA:employee_only", "name": "health.premium", "value": 10.50, "unit": "usd_per_paycheck", "plan": "HDHP With HSA", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.out_of_pocket_max:PPO 750:employee_only", "name": "health.out_of_pocket_max", "value": 3000, "unit": "usd_per_year", "plan": "PPO 750", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.out_of_pocket_max:PPO 1500:employee_only", "name": "health.out_of_pocket_max", "value": 4500, "unit": "usd_per_year", "plan": "PPO 1500", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.out_of_pocket_max:HDHP With HSA:employee_only", "name": "health.out_of_pocket_max", "value": 6800, "unit": "usd_per_year", "plan": "HDHP With HSA", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.deductible:HDHP With HSA:employee_only", "name": "health.deductible", "value": 3400, "unit": "usd_per_year", "plan": "HDHP With HSA", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 },
+    { "id": "tyler_2026_benefits_summary.pdf:health.employer_hsa_contribution:HDHP With HSA:employee_only", "name": "health.employer_hsa_contribution", "value": 750, "unit": "usd_per_year", "plan": "HDHP With HSA", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3, "source_text": "$750: Individual" }
+  ],
+  "expected": {
+    "figures": [
+      { "id": "ppo750_premium", "label": "PPO 750 premium per check", "value": 69.30, "unit": "usd_per_paycheck", "graded": false, "from_field": "tyler_2026_benefits_summary.pdf:health.premium:PPO 750:employee_only" },
+      { "id": "ppo1500_premium", "label": "PPO 1500 premium per check", "value": 34.65, "unit": "usd_per_paycheck", "graded": false, "from_field": "tyler_2026_benefits_summary.pdf:health.premium:PPO 1500:employee_only" },
+      { "id": "hdhp_premium", "label": "HDHP premium per check", "value": 10.50, "unit": "usd_per_paycheck", "graded": false, "from_field": "tyler_2026_benefits_summary.pdf:health.premium:HDHP With HSA:employee_only" },
+      { "id": "employer_hsa", "label": "Tyler HSA contribution (full year)", "value": 750, "unit": "usd_per_year", "from_field": "tyler_2026_benefits_summary.pdf:health.employer_hsa_contribution:HDHP With HSA:employee_only" },
+
+      { "id": "ppo750_low_use", "label": "PPO 750 yearly cost, low-use year", "value": 1801.80, "unit": "usd_per_year", "derivation": "ppo750_premium * 26" },
+      { "id": "ppo1500_low_use", "label": "PPO 1500 yearly cost, low-use year", "value": 900.90, "unit": "usd_per_year", "derivation": "ppo1500_premium * 26" },
+      { "id": "hdhp_low_use", "label": "HDHP yearly cost, low-use year (net of Tyler HSA money)", "value": -477.00, "unit": "usd_per_year", "derivation": "hdhp_premium * 26 - employer_hsa" },
+      { "id": "ppo750_high_use", "label": "PPO 750 yearly cost, high-use year", "value": 4801.80, "unit": "usd_per_year", "derivation": "ppo750_low_use + 3000" },
+      { "id": "ppo1500_high_use", "label": "PPO 1500 yearly cost, high-use year", "value": 5400.90, "unit": "usd_per_year", "derivation": "ppo1500_low_use + 4500" },
+      { "id": "hdhp_high_use", "label": "HDHP yearly cost, high-use year (net of Tyler HSA money)", "value": 6323.00, "unit": "usd_per_year", "derivation": "hdhp_premium * 26 + 6800 - employer_hsa" },
+      { "id": "employer_hsa_per_check", "label": "Tyler HSA deposit per check", "value": 28.85, "unit": "usd_per_paycheck", "derivation": "employer_hsa / 26" },
+      { "id": "hsa_own_room", "label": "Room left for your own HSA money (2026 self-only $4,400 minus Tyler's $750)", "value": 3650, "unit": "usd_per_year", "derivation": "4400 - employer_hsa" }
+    ],
+    "must_include": [
+      "Low-use yearly cost: PPO 750 about $1,802, PPO 1500 about $901, HDHP about -$477 after Tyler's $750 HSA deposit.",
+      "High-use yearly cost at the out-of-pocket max: PPO 750 about $4,802, PPO 1500 about $5,401, HDHP about $6,323.",
+      "For someone who rarely sees a doctor the HDHP costs least; in a bad year it costs about $1,521 more than the PPO 750.",
+      "The HSA tax benefit (in before tax, grows tax-free, out tax-free for medical costs) and that Tyler's deposit comes biweekly.",
+      "Tyler's HSA contribution is prorated by hire date, so a new hire may get less than $750 the first year.",
+      "Wellness (preventive) claims are paid 100% on all three plans.",
+      "Links to page 3 of the Tyler summary."
+    ],
+    "must_not_include": ["Using the synthetic guide's $500 HSA contribution or its premiums."],
+    "citations": [{ "doc": "tyler_2026_benefits_summary.pdf", "page": 3 }],
+    "tools": ["search_documents", "benefits_cost"]
+  },
+  "assumptions": [
+    "Employee-only coverage. Low-use = wellness claims only. High-use = reaches the out-of-pocket max.",
+    "Full-year HSA contribution ($750); a January start gets close to that. The proration rule is not in the summary.",
+    "The summary lists the same 80/20 coinsurance for all three plans and a $25 copay on PPO 750 office visits."
+  ],
+  "sources": [
+    { "what": "HSA self-only limit $4,400", "url": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 }
+  ],
+  "notes": "Document: Tyler Technologies 2026 U.S. Compensation & Benefits Summary (6 pages, public new-hire summary). Not committed yet; samples/ needs a decision from the team on whether to add it."
+}

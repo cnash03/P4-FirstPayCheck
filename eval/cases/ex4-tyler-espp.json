@@ -1,0 +1,49 @@
+{
+  "id": "ex4-tyler-espp",
+  "example": 4,
+  "variant_of": "ex4-espp",
+  "analysis": "espp",
+  "question": "We can buy company stock at a 15% discount. Should I?",
+  "source": "proposal Appendix A, on the Tyler 2026 U.S. Compensation & Benefits Summary",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["offer_letter.pdf", "tyler_2026_benefits_summary.pdf"],
+  "profile": "default",
+  "fields": [
+    "offer_letter.pdf:offer.annual_salary",
+    "offer_letter.pdf:offer.start_date",
+    { "id": "tyler_2026_benefits_summary.pdf:espp.discount_percent", "name": "espp.discount_percent", "value": 15, "unit": "percent", "doc": "tyler_2026_benefits_summary.pdf", "page": 6, "source_text": "a price equal to 85% of the fair market value of Tyler common stock on the purchase date" },
+    { "id": "tyler_2026_benefits_summary.pdf:espp.lookback", "name": "espp.lookback", "value": false, "unit": "boolean", "doc": "tyler_2026_benefits_summary.pdf", "page": 6, "source_text": "on the purchase date" },
+    { "id": "tyler_2026_benefits_summary.pdf:espp.offering_period_months", "name": "espp.offering_period_months", "value": 3, "unit": "months", "doc": "tyler_2026_benefits_summary.pdf", "page": 6, "source_text": "At the end of each quarterly offering period" },
+    { "id": "tyler_2026_benefits_summary.pdf:espp.max_contribution_percent", "name": "espp.max_contribution_percent", "value": 15, "unit": "percent", "doc": "tyler_2026_benefits_summary.pdf", "page": 6, "source_text": "You may contribute 1-15% of your pay" }
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary", "value": 90000, "unit": "usd_per_year", "graded": false, "from_field": "offer_letter.pdf:offer.annual_salary" },
+      { "id": "discount_percent", "label": "ESPP discount", "value": 15, "unit": "percent", "graded": false, "from_field": "tyler_2026_benefits_summary.pdf:espp.discount_percent" },
+      { "id": "months_until_eligible", "label": "Months of service before you can join", "value": 6, "unit": "count" },
+      { "id": "espp_per_quarter", "label": "Money in per quarterly offering period at 10%", "value": 2250, "unit": "usd_per_period", "derivation": "annual_salary / 4 * 0.10" },
+      { "id": "built_in_gain", "label": "Built-in gain per quarter (buy at 85% of purchase-date price)", "value": 397.06, "unit": "usd_per_period", "derivation": "espp_per_quarter * discount_percent / (100 - discount_percent)" },
+      { "id": "built_in_return", "label": "Built-in return on money in", "value": 17.65, "unit": "percent", "tolerance": 0.1, "derivation": "100 * discount_percent / (100 - discount_percent)" }
+    ],
+    "must_include": [
+      "You cannot join yet: the plan requires six months of service (and 20+ hours a week), so with a Jan 4, 2027 start the earliest is about July 2027.",
+      "The built-in gain: buying at 85% of the purchase-date price is about a 17.6% return, about $397 per quarter at 10% of pay.",
+      "There is no lookback: the price is 85% of the price on the purchase date only.",
+      "The summary does not state a holding period; says to check the full plan document instead of assuming none.",
+      "The risk of holding your own employer's stock, and a sell-or-hold rule of thumb (sell soon after purchase unless you choose to hold a small share).",
+      "Says it comes after the 401(k) match and an emergency fund."
+    ],
+    "must_not_include": [
+      "always buy",
+      "Saying the plan has a lookback, or a 6-month offering period (that is the synthetic guide)."
+    ],
+    "citations": [{ "doc": "tyler_2026_benefits_summary.pdf", "page": 6 }],
+    "tools": ["search_documents", "espp"]
+  },
+  "assumptions": [
+    "Salary and start date are the synthetic offer letter's ($90,000, Jan 4, 2027) until a real (non-identifying) profile is added.",
+    "Contributes 10% of pay once eligible."
+  ],
+  "notes": "Document: Tyler 2026 U.S. Compensation & Benefits Summary, page 6. Not committed yet."
+}

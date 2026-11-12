@@ -1,0 +1,59 @@
+{
+  "id": "ex4-espp",
+  "example": 4,
+  "analysis": "espp",
+  "question": "We can buy company stock at a 15% discount. Should I?",
+  "source": "proposal Appendix A (the hard case)",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["offer_letter.pdf", "benefits_guide.pdf"],
+  "profile": "default",
+  "fields": [
+    "offer_letter.pdf:offer.annual_salary",
+    "benefits_guide.pdf:espp.discount_percent",
+    "benefits_guide.pdf:espp.lookback",
+    "benefits_guide.pdf:espp.offering_period_months",
+    "benefits_guide.pdf:espp.holding_period_months",
+    "benefits_guide.pdf:espp.max_contribution_percent"
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary", "value": 90000, "unit": "usd_per_year", "graded": false, "from_field": "offer_letter.pdf:offer.annual_salary" },
+      { "id": "discount_percent", "label": "ESPP discount", "value": 15, "unit": "percent", "graded": false, "from_field": "benefits_guide.pdf:espp.discount_percent" },
+      { "id": "holding_months", "label": "Holding period", "value": 6, "unit": "count", "graded": false, "from_field": "benefits_guide.pdf:espp.holding_period_months", "note": "180 days." },
+      { "id": "espp_percent", "label": "Contribution rate", "value": 10, "unit": "percent", "graded": false, "from_profile": "espp_percent" },
+
+      { "id": "espp_per_check", "label": "After-tax ESPP deduction per check at 10%", "value": 346.15, "unit": "usd_per_paycheck", "derivation": "annual_salary / 26 * espp_percent / 100" },
+      { "id": "espp_per_period", "label": "Money in per 6-month offering period", "value": 4500, "unit": "usd_per_period", "derivation": "annual_salary / 2 * espp_percent / 100" },
+      { "id": "built_in_gain", "label": "Built-in gain per period if the price does not move (buy at 85%)", "value": 794.12, "unit": "usd_per_period", "derivation": "espp_per_period * discount_percent / (100 - discount_percent)" },
+      { "id": "built_in_return", "label": "Built-in return on money in", "value": 17.65, "unit": "percent", "tolerance": 0.1, "derivation": "100 * discount_percent / (100 - discount_percent)" },
+      { "id": "lookback_gain_example", "label": "Gain per period if the price rises from $100 to $120 (lookback buys at $85)", "value": 1852.94, "unit": "usd_per_period", "graded": false, "derivation": "espp_per_period / 85 * 120 - espp_per_period" }
+    ],
+    "must_include": [
+      "The built-in gain: buying at 85% of the price is about a 17.6% return (about $794 on $4,500 per period at 10% of pay) if the stock price is flat.",
+      "The lookback: the price is 85% of the lower of the first and last day of the period, so a rising stock adds to the gain.",
+      "The 180-day holding period: shares cannot be sold right away, so the stock can fall more than the 15% discount before you can sell.",
+      "The risk of holding your own employer's stock: your paycheck and your savings both depend on one company.",
+      "A sell-or-hold rule of thumb, such as selling when the holding period ends and keeping company stock to a small share (about 10% or less) of investments.",
+      "Says ESPP money comes out after tax and is not a retirement account; the discount is taxed as income when you sell.",
+      "Says it makes sense only after the 401(k) match and an emergency fund are covered; the default profile has a 3-month fund."
+    ],
+    "must_not_include": [
+      "always buy",
+      "Calling the discount free money or risk-free without mentioning the 180-day holding period."
+    ],
+    "citations": [
+      { "doc": "benefits_guide.pdf", "page": 8 }
+    ],
+    "tools": ["search_documents", "espp"]
+  },
+  "assumptions": [
+    "Contributes 10% of pay (profile 'default' espp_percent); the plan allows 1-15%.",
+    "13 checks per 6-month period; per-period money is half the salary times the rate.",
+    "The $25,000 yearly and 750-share limits are not reached at this salary.",
+    "The proposal's hard case: the plan has a holding period, so the answer must not say 'always buy'. ex4-espp-no-emergency-fund adds the second trigger."
+  ],
+  "sources": [
+    { "what": "Section 423 ESPP: up to 15% discount, $25,000 yearly limit; disqualifying disposition taxes the discount as wages", "url": "https://www.irs.gov/taxtopics/tc427", "tax_year": 2026 }
+  ]
+}

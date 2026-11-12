@@ -1,0 +1,60 @@
+{
+  "id": "ex5-loans-vs-invest",
+  "example": 5,
+  "analysis": "loan_vs_invest",
+  "question": "I have student loans at 4.5%. Should I pay them off faster or invest?",
+  "source": "proposal Appendix A",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["offer_letter.pdf", "benefits_guide.pdf"],
+  "profile": "default",
+  "fields": [
+    "offer_letter.pdf:offer.annual_salary",
+    "benefits_guide.pdf:retirement.match_tiers"
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary", "value": 90000, "unit": "usd_per_year", "graded": false, "from_field": "offer_letter.pdf:offer.annual_salary" },
+      { "id": "loan_balance", "label": "Loan balance", "value": 25000, "unit": "usd", "graded": false, "note": "profile student_loans[0].balance" },
+      { "id": "savings_goal", "label": "Savings goal per check", "value": 600, "unit": "usd_per_paycheck", "graded": false, "from_profile": "savings_goal_per_check" },
+      { "id": "gross_pay", "label": "Gross pay per check", "value": 3461.54, "unit": "usd_per_paycheck", "graded": false, "derivation": "annual_salary / 26" },
+
+      { "id": "match_return", "label": "Instant return on matched 401(k) dollars", "value": 50, "unit": "percent", "note": "50 cents per dollar on the first 6%." },
+      { "id": "loan_rate", "label": "Loan rate", "value": 4.5, "unit": "percent", "graded": false },
+      { "id": "expected_return", "label": "Assumed long-run stock return (not guaranteed)", "value": 7, "unit": "percent", "graded": false },
+
+      { "id": "loan_min_payment", "label": "Minimum loan payment (10-year standard plan)", "value": 259.10, "unit": "usd_per_month", "derivation": "loan_balance * 0.00375 / (1 - 1 / 1.00375 ** 120)" },
+      { "id": "loan_min_per_check", "label": "Minimum loan payment set aside per check", "value": 119.58, "unit": "usd_per_paycheck", "derivation": "loan_min_payment * 12 / 26" },
+      { "id": "step1_401k_to_match", "label": "First: 401(k) at 6% for the full match", "value": 207.69, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.06" },
+      { "id": "match_per_check", "label": "Company match per check", "value": 103.85, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.03" },
+      { "id": "step2_roth_ira", "label": "Next: Roth IRA", "value": 288.46, "unit": "usd_per_paycheck", "derivation": "min(7500 / 26, savings_goal - step1_401k_to_match)" },
+      { "id": "step3_left_over", "label": "Left over: extra loan payment or extra 401(k), your call", "value": 103.85, "unit": "usd_per_paycheck", "derivation": "savings_goal - step1_401k_to_match - step2_roth_ira" }
+    ],
+    "must_include": [
+      "Always pay the minimum on the loans (about $259 a month, or about $120 per check, on a 10-year plan for $25,000).",
+      "The 401(k) match comes before extra loan payments: a 50% instant return beats a 4.5% loan.",
+      "Compares 4.5% to expected long-run investment returns (around 6-7%, not guaranteed): investing is expected to win, but paying the loan is a guaranteed 4.5%.",
+      "Gives the order of dollars per check: 401(k) to the match ($207.69), then Roth IRA ($288.46), then the remaining ~$103.85 to extra loan payments or extra 401(k).",
+      "Checks the emergency fund first; the default profile has 3 months, so it can invest. With no fund, building it comes before both.",
+      "Mentions that federal student loan interest may be deductible, which lowers the loan's effective rate a little."
+    ],
+    "must_not_include": [
+      "Paying extra on the loans before getting the full 401(k) match.",
+      "Promising a specific market return."
+    ],
+    "citations": [
+      { "doc": "benefits_guide.pdf", "page": 7 }
+    ],
+    "tools": ["search_documents", "loan_vs_invest", "contribution_order"]
+  },
+  "assumptions": [
+    "Profile 'default': $25,000 federal loans at 4.5%, 10-year standard repayment, 3-month emergency fund, $600 savings goal per check.",
+    "The minimum loan payment is a bill, not part of the $600 savings goal.",
+    "7% long-run return is an illustration for the comparison only.",
+    "The PPO 750 profile has no HSA step; with the HDHP the HSA comes after the match (see ex3-match-then-roth)."
+  ],
+  "sources": [
+    { "what": "Student loan interest deduction (up to $2,500, income phase-out)", "url": "https://www.irs.gov/taxtopics/tc456", "tax_year": 2026 },
+    { "what": "IRA limit $7,500", "url": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 }
+  ]
+}

@@ -1,0 +1,77 @@
+{
+  "id": "ex2-hdhp-vs-ppo",
+  "example": 2,
+  "analysis": "benefits_cost",
+  "question": "Should I pick the high-deductible plan with an HSA or the PPO? I rarely see a doctor.",
+  "source": "proposal Appendix A",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["benefits_guide.pdf"],
+  "profile": "default",
+  "fields": [
+    "benefits_guide.pdf:health.premium:PPO 750:employee_only",
+    "benefits_guide.pdf:health.premium:PPO 1500:employee_only",
+    "benefits_guide.pdf:health.premium:HDHP with HSA:employee_only",
+    "benefits_guide.pdf:health.deductible:PPO 750:employee_only",
+    "benefits_guide.pdf:health.deductible:PPO 1500:employee_only",
+    "benefits_guide.pdf:health.deductible:HDHP with HSA:employee_only",
+    "benefits_guide.pdf:health.out_of_pocket_max:PPO 750:employee_only",
+    "benefits_guide.pdf:health.out_of_pocket_max:PPO 1500:employee_only",
+    "benefits_guide.pdf:health.out_of_pocket_max:HDHP with HSA:employee_only",
+    "benefits_guide.pdf:health.employer_hsa_contribution:HDHP with HSA:employee_only"
+  ],
+  "expected": {
+    "figures": [
+      { "id": "ppo750_premium", "label": "PPO 750 premium per check", "value": 62.00, "unit": "usd_per_paycheck", "graded": false, "from_field": "benefits_guide.pdf:health.premium:PPO 750:employee_only" },
+      { "id": "ppo1500_premium", "label": "PPO 1500 premium per check", "value": 38.00, "unit": "usd_per_paycheck", "graded": false, "from_field": "benefits_guide.pdf:health.premium:PPO 1500:employee_only" },
+      { "id": "hdhp_premium", "label": "HDHP premium per check", "value": 18.00, "unit": "usd_per_paycheck", "graded": false, "from_field": "benefits_guide.pdf:health.premium:HDHP with HSA:employee_only" },
+      { "id": "ppo750_oop_max", "label": "PPO 750 out-of-pocket max", "value": 3500, "unit": "usd_per_year", "graded": false, "from_field": "benefits_guide.pdf:health.out_of_pocket_max:PPO 750:employee_only" },
+      { "id": "ppo1500_oop_max", "label": "PPO 1500 out-of-pocket max", "value": 5000, "unit": "usd_per_year", "graded": false, "from_field": "benefits_guide.pdf:health.out_of_pocket_max:PPO 1500:employee_only" },
+      { "id": "hdhp_oop_max", "label": "HDHP out-of-pocket max", "value": 6500, "unit": "usd_per_year", "graded": false, "from_field": "benefits_guide.pdf:health.out_of_pocket_max:HDHP with HSA:employee_only" },
+      { "id": "employer_hsa", "label": "Company HSA contribution", "value": 500, "unit": "usd_per_year", "from_field": "benefits_guide.pdf:health.employer_hsa_contribution:HDHP with HSA:employee_only" },
+
+      { "id": "ppo750_premium_year", "label": "PPO 750 premiums per year", "value": 1612.00, "unit": "usd_per_year", "derivation": "ppo750_premium * 26" },
+      { "id": "ppo1500_premium_year", "label": "PPO 1500 premiums per year", "value": 988.00, "unit": "usd_per_year", "derivation": "ppo1500_premium * 26" },
+      { "id": "hdhp_premium_year", "label": "HDHP premiums per year", "value": 468.00, "unit": "usd_per_year", "derivation": "hdhp_premium * 26" },
+
+      { "id": "ppo750_low_use", "label": "PPO 750 yearly cost, low-use year", "value": 1612.00, "unit": "usd_per_year", "derivation": "ppo750_premium_year" },
+      { "id": "ppo1500_low_use", "label": "PPO 1500 yearly cost, low-use year", "value": 988.00, "unit": "usd_per_year", "derivation": "ppo1500_premium_year" },
+      { "id": "hdhp_low_use", "label": "HDHP yearly cost, low-use year (net of company HSA money)", "value": -32.00, "unit": "usd_per_year", "derivation": "hdhp_premium_year - employer_hsa" },
+
+      { "id": "ppo750_high_use", "label": "PPO 750 yearly cost, high-use year", "value": 5112.00, "unit": "usd_per_year", "derivation": "ppo750_premium_year + ppo750_oop_max" },
+      { "id": "ppo1500_high_use", "label": "PPO 1500 yearly cost, high-use year", "value": 5988.00, "unit": "usd_per_year", "derivation": "ppo1500_premium_year + ppo1500_oop_max" },
+      { "id": "hdhp_high_use", "label": "HDHP yearly cost, high-use year (net of company HSA money)", "value": 6468.00, "unit": "usd_per_year", "derivation": "hdhp_premium_year + hdhp_oop_max - employer_hsa" },
+
+      { "id": "hsa_own_room", "label": "Room left for your own HSA money (2026 self-only limit $4,400 minus company $500)", "value": 3900, "unit": "usd_per_year", "derivation": "4400 - employer_hsa" },
+      { "id": "hsa_tax_savings", "label": "Tax saved by putting $3,900 in the HSA through payroll", "value": 1327.95, "unit": "usd_per_year", "derivation": "hsa_own_room * (0.22 + 0.044 + 0.0765)", "note": "22% federal bracket + 4.4% Colorado + 7.65% FICA (payroll HSA deductions skip FICA)." }
+    ],
+    "must_include": [
+      "Yearly cost of each of the three plans in a low-use year: PPO 750 about $1,612, PPO 1500 about $988, HDHP about -$32 after the company's $500 HSA deposit.",
+      "Yearly cost of each plan in a high-use year that reaches the out-of-pocket max: PPO 750 about $5,112, PPO 1500 about $5,988, HDHP about $6,468.",
+      "For someone who rarely sees a doctor, the HDHP costs least; it costs most if the year goes badly, by about $1,356 versus the PPO 750.",
+      "The HSA tax benefit: money goes in before tax, grows tax-free, and comes out tax-free for medical costs, and the account is yours if you leave.",
+      "Preventive care is free on all three plans, so 'rarely see a doctor' visits like an annual physical cost $0 on any plan.",
+      "Suggests keeping enough savings (or HSA balance) to cover the HDHP deductible ($3,400) in case of a bad year.",
+      "Notes the choice is locked until open enrollment in November unless there is a qualifying life event."
+    ],
+    "must_not_include": [
+      "Counting the HSA company contribution on the PPO plans.",
+      "Telling the user they must pick a plan, without the advisor disclaimer."
+    ],
+    "citations": [
+      { "doc": "benefits_guide.pdf", "page": 4 },
+      { "doc": "benefits_guide.pdf", "page": 5 }
+    ],
+    "tools": ["search_documents", "benefits_cost"]
+  },
+  "assumptions": [
+    "Employee-only coverage, 26 checks a year.",
+    "Low-use year: preventive care only, so $0 out of pocket on every plan.",
+    "High-use year: claims large enough to reach each plan's in-network out-of-pocket max.",
+    "HSA tax saving uses the 22% federal bracket from ex1-take-home and assumes contributions go through payroll."
+  ],
+  "sources": [
+    { "what": "HSA self-only contribution limit $4,400 (includes employer money)", "url": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 }
+  ],
+  "notes": "Edge cases for this example are in eval/edge_cases.md (family tier, mid-year hire proration, HSA plus FSA conflict)."
+}
