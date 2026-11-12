@@ -23,6 +23,7 @@ Everything runs on localhost. Uploaded documents stay in the git-ignored `data/`
 
 ## Quick start
 
+    git config core.hooksPath .githooks     # once per clone: turn on the privacy check
     python -m venv .venv && source .venv/bin/activate
     pip install -r requirements.txt
     python docs/ingest.py samples/          # build data/firstpaycheck.sqlite from synthetic docs
@@ -35,7 +36,10 @@ Run the tests with `pytest`, and the evaluation with `python eval/run.py`.
 
 Never commit or paste a real offer letter, pay stub, or benefits guide into this repo or into an AI
 coding tool. Use the synthetic files in `samples/`. A pre-commit check blocks names, salaries, and ID
-numbers.
+numbers, and CI runs the same check on every PR; see `safety/README.md`. The repo is public, so
+anything committed is public.
+
+Every plan screen and agent answer carries the advisor disclaimer from `safety/disclaimer.json`.
 
 ## Team
 
