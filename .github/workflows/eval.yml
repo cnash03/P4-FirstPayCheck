@@ -24,6 +24,8 @@ jobs:
         with:
           python-version: "3.12"
           cache: pip
+      - name: Privacy check (no personal data in any committed file)
+        run: python safety/check_private.py --all
       - run: pip install -r requirements.txt
       - name: Tests
         run: pytest

@@ -1,0 +1,11 @@
+# Paths where synthetic personal data is allowed on purpose. One glob per line, then " # why".
+# Everything else is checked by safety/check_private.py. Add a path only for synthetic data.
+
+samples/*                          # synthetic documents and their answer files
+tests/*                            # fake names, SSNs and addresses that the redaction tests use
+eval/cases/*                       # expected answers built on the synthetic documents
+eval/profiles/*                    # synthetic and rounded new-hire profiles
+docs/fields.schema.json            # example field quotes the synthetic offer's $90,000 salary
+docs/redact.py                     # patterns and examples of what to redact
+safety/check_private.py            # the checker's own patterns
+P4 Proposal — FirstPaycheck.pdf    # the team's proposal; team names only, no personal data

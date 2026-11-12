@@ -1,0 +1,4 @@
+#!/bin/sh
+# Blocks commits with personal data. Turn on once per clone:
+#   git config core.hooksPath .githooks
+exec python3 "$(git rev-parse --show-toplevel)/safety/check_private.py"
