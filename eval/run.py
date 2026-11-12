@@ -18,13 +18,15 @@ import json
 import os
 import re
 import sys
-from collections import defaultdict
 from datetime import datetime, timezone
 from pathlib import Path
 
-from agents import AGENT_SCRIPT, AGENTS
-from cases import EVAL, USD_UNITS, load_cases, missing_docs, tolerance
-from judge import JUDGES
+if __package__ in (None, ""):  # run as `python eval/<script>.py`: make the eval package importable
+    sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
+
+from eval.agents import AGENT_SCRIPT, AGENTS
+from eval.cases import EVAL, USD_UNITS, load_cases, missing_docs, tolerance
+from eval.judge import JUDGES
 
 RESULTS = EVAL / "results"
 PRICING = json.loads((EVAL / "pricing.json").read_text())

@@ -16,7 +16,7 @@ import sys
 import tempfile
 from pathlib import Path
 
-from cases import DOC_DIRS, ROOT
+from eval.cases import DOC_DIRS, ROOT
 
 AGENT_SCRIPT = ROOT / "agent" / "run.py"
 

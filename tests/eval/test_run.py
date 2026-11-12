@@ -3,15 +3,13 @@
 Nothing here calls the real API; the Claude judge is tested with a fake client.
 """
 import json
-import sys
 from types import SimpleNamespace
 
 import pytest
 
-import agents
-import run
-from cases import load_cases, missing_docs
-from judge import claude_judge
+from eval import agents, run
+from eval.cases import load_cases, missing_docs
+from eval.judge import claude_judge
 
 RUNNABLE = [c for c in load_cases() if not missing_docs(c)]
 BY_ID = {c["id"]: c for c in load_cases()}
