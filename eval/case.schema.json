@@ -1,0 +1,164 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "firstpaycheck/eval/case.schema.json",
+  "title": "FirstPaycheck evaluation case",
+  "description": "One question a new hire asks, the documents and profile it depends on, and the answer the user confirmed. eval/run.py grades the agent and the no-tools baseline against these. A case passes when every graded figure is within its tolerance and every must_include point is covered. See eval/README.md.",
+  "type": "object",
+  "required": ["id", "analysis", "question", "status", "tax_year", "docs", "profile", "expected"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(-[a-z0-9]+)*$",
+      "description": "Matches the file name without .json, e.g. ex1-take-home."
+    },
+    "example": {
+      "type": "integer", "minimum": 1, "maximum": 5,
+      "description": "Appendix A example number, for the five proposal examples and their variants."
+    },
+    "variant_of": {
+      "type": "string",
+      "description": "id of the case this one changes (an edge case or a different document set)."
+    },
+    "analysis": {
+      "enum": ["paycheck", "benefits_cost", "contribution_order", "espp", "loan_vs_invest", "offer_compare", "explain"],
+      "description": "Which analysis the case scores. eval/run.py reports a pass rate per analysis. Matches the calculator names in the proposal."
+    },
+    "question": { "type": "string", "description": "Exactly what the new hire asks." },
+    "source": {
+      "type": "string",
+      "description": "Where the question came from: 'proposal Appendix A', 'interview <date>', 'edge case'. No names of real people."
+    },
+    "status": {
+      "enum": ["draft", "user_confirmed"],
+      "description": "draft = hand-computed, not yet judged by a new hire. user_confirmed = a new hire judged this answer right."
+    },
+    "confirmed_on": {
+      "type": "string", "format": "date",
+      "description": "YYYY-MM-DD the user confirmed it. Required when status is user_confirmed."
+    },
+    "tax_year": {
+      "type": "integer",
+      "description": "Tax tables and limits the figures use. Re-check every figure when this changes."
+    },
+    "docs": {
+      "type": "array", "minItems": 1, "items": { "type": "string" },
+      "description": "Document file names the agent gets, e.g. benefits_guide.pdf. Files in samples/ unless the case notes say otherwise."
+    },
+    "profile": {
+      "type": "string",
+      "description": "Name of a file in eval/profiles/ without .json."
+    },
+    "profile_overrides": {
+      "type": "object",
+      "description": "Keys that replace the named profile's values for this case only (shallow merge)."
+    },
+    "fields": {
+      "type": "array",
+      "description": "Extracted document fields the answer depends on. A string is a field id from samples/answers/*.json (resolved by the loader). An object is an inline field, using docs/fields.schema.json's shape, for documents with no answer file yet.",
+      "items": {
+        "oneOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "required": ["id", "name", "value", "unit", "doc", "page"],
+            "properties": {
+              "id": { "type": "string" }, "name": { "type": "string" },
+              "value": {}, "unit": { "type": "string" },
+              "plan": { "type": "string" }, "coverage_tier": { "type": "string" },
+              "doc": { "type": "string" }, "page": { "type": "integer", "minimum": 1 },
+              "source_text": { "type": "string" }
+            }
+          }
+        ]
+      }
+    },
+    "expected": {
+      "type": "object",
+      "required": ["figures", "must_include"],
+      "additionalProperties": false,
+      "properties": {
+        "figures": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/figure" },
+          "description": "Every number the answer should state, plus the inputs they come from (graded: false)."
+        },
+        "must_include": {
+          "type": "array", "minItems": 1, "items": { "type": "string" },
+          "description": "Points a correct answer covers. Each is judged present or missing."
+        },
+        "must_not_include": {
+          "type": "array", "items": { "type": "string" },
+          "description": "Claims that make the answer wrong, e.g. 'always buy'."
+        },
+        "citations": {
+          "type": "array",
+          "items": {
+            "type": "object", "required": ["doc", "page"], "additionalProperties": false,
+            "properties": { "doc": { "type": "string" }, "page": { "type": "integer", "minimum": 1 } }
+          },
+          "description": "Pages the answer must link to. Also the retrieval check: each page is in the search tool's top 3."
+        },
+        "tools": {
+          "type": "array", "items": { "type": "string" },
+          "description": "Calculator tools the agent should call (names from the proposal: paycheck, benefits_cost, contribution_order, espp, loan_vs_invest, offer_compare, search_documents)."
+        },
+        "asks_for": {
+          "type": "array", "items": { "type": "string" },
+          "description": "Inputs the agent must ask the user for instead of guessing (missing or unconfirmed). When set, figures may be empty."
+        }
+      }
+    },
+    "assumptions": {
+      "type": "array", "items": { "type": "string" },
+      "description": "Choices made to get one right answer (W-4 settings, what a low-use year means). A teammate changing one must re-derive the figures."
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "type": "object", "required": ["what", "url"], "additionalProperties": false,
+        "properties": {
+          "what": { "type": "string" },
+          "url": { "type": "string" },
+          "tax_year": { "type": "integer" }
+        }
+      },
+      "description": "Official source for every rate or limit the figures use."
+    },
+    "notes": { "type": "string" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "user_confirmed" } } },
+      "then": { "required": ["confirmed_on"] }
+    }
+  ],
+  "$defs": {
+    "figure": {
+      "type": "object",
+      "required": ["id", "label", "value", "unit"],
+      "additionalProperties": false,
+      "properties": {
+        "id": { "type": "string", "pattern": "^[a-z][a-z0-9_]*$", "description": "Name used in other figures' derivations." },
+        "label": { "type": "string", "description": "How the answer should name it." },
+        "value": { "type": "number" },
+        "unit": { "enum": ["usd_per_paycheck", "usd_per_month", "usd_per_year", "usd_per_period", "usd", "percent", "count"] },
+        "graded": {
+          "type": "boolean", "default": true,
+          "description": "false for inputs and intermediate steps the answer need not state."
+        },
+        "tolerance": {
+          "type": "number", "minimum": 0,
+          "description": "Allowed difference. Defaults to 1.00 for usd units (the proposal's $1 rule) and 0 otherwise."
+        },
+        "derivation": {
+          "type": "string",
+          "description": "Arithmetic over other figure ids and numbers (+ - * / parentheses, min, max). The test suite recomputes it, rounds to cents, and checks it equals value."
+        },
+        "from_field": { "type": "string", "description": "Field id this input comes from; value must equal that field's value." },
+        "from_profile": { "type": "string", "description": "Profile key this input comes from; value must equal it." },
+        "note": { "type": "string" }
+      }
+    }
+  }
+}

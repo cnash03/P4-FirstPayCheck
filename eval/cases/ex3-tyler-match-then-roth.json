@@ -1,0 +1,53 @@
+{
+  "id": "ex3-tyler-match-then-roth",
+  "example": 3,
+  "variant_of": "ex3-match-then-roth",
+  "analysis": "contribution_order",
+  "question": "The company matches 6% of my 401(k). Should I also open a Roth IRA, and which comes first?",
+  "source": "proposal Appendix A, Tyler profile",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["tyler_2026_benefits_summary.pdf"],
+  "profile": "tyler",
+  "fields": [
+    { "id": "tyler_2026_benefits_summary.pdf:retirement.match_tiers", "name": "retirement.match_tiers", "value": [{ "match_percent": 50, "up_to_percent_of_pay": 6 }], "unit": "match_tiers", "doc": "tyler_2026_benefits_summary.pdf", "page": 5, "source_text": "Tyler will match 50% of the first 6% of your eligible contributions." }
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary (typed in the quiz)", "value": 85000, "unit": "usd_per_year", "graded": false, "from_profile": "annual_salary" },
+      { "id": "savings_goal", "label": "Savings goal per check", "value": 600, "unit": "usd_per_paycheck", "graded": false, "from_profile": "savings_goal_per_check" },
+      { "id": "gross_pay", "label": "Gross pay per check", "value": 3269.23, "unit": "usd_per_paycheck", "graded": false, "derivation": "annual_salary / 26" },
+
+      { "id": "match_percent_of_pay", "label": "Most the match is worth, as % of pay", "value": 3, "unit": "percent", "derivation": "0.5 * 6" },
+      { "id": "step1_401k_to_match", "label": "Step 1: 401(k) at 6% for the full match", "value": 196.15, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.06" },
+      { "id": "match_per_check", "label": "Tyler match per check", "value": 98.08, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.03" },
+      { "id": "match_per_year", "label": "Tyler match per year", "value": 2550, "unit": "usd_per_year", "derivation": "annual_salary * 0.03" },
+      { "id": "step3_roth_ira", "label": "Step 3: Roth IRA ($7,500 limit), per check", "value": 288.46, "unit": "usd_per_paycheck", "derivation": "min(7500 / 26, savings_goal - step1_401k_to_match)" },
+      { "id": "step4_extra_401k", "label": "Step 4: extra 401(k) with what is left", "value": 115.39, "unit": "usd_per_paycheck", "derivation": "savings_goal - step1_401k_to_match - step3_roth_ira" },
+      { "id": "hsa_max_per_check_if_hdhp", "label": "Step 2 if on the HDHP: your own HSA money to the limit, per check", "value": 140.38, "unit": "usd_per_paycheck", "derivation": "(4400 - 750) / 26" }
+    ],
+    "must_include": [
+      "Corrects the premise: Tyler matches 50% of the first 6%, worth 3% of pay; contribute 6% to get all of it.",
+      "Step 1: 401(k) at 6%, about $196.15 per check, for about $98.08 per check ($2,550 a year) of match.",
+      "Step 2: HSA only on the HDHP (about $140.38 per check to the limit after Tyler's $750); skipped on the PPO 750.",
+      "Step 3: Roth IRA, about $288.46 per check.",
+      "Step 4: about $115.39 per check left for extra 401(k) on a $600 goal.",
+      "Tyler's match vests 20% a year over the first five years.",
+      "Cites page 5 of the Tyler summary for the match."
+    ],
+    "must_not_include": [
+      "Roth IRA before the full 401(k) match.",
+      "Saying the match is 6% of pay."
+    ],
+    "citations": [{ "doc": "tyler_2026_benefits_summary.pdf", "page": 5 }],
+    "tools": ["search_documents", "contribution_order"]
+  },
+  "assumptions": [
+    "Profile 'tyler': $85,000 rounded salary, PPO 750, $600 savings goal per check, 3-month emergency fund.",
+    "Same order of operations as ex3-match-then-roth."
+  ],
+  "sources": [
+    { "what": "IRA limit $7,500; 401(k) limit $24,500", "url": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    { "what": "HSA self-only limit $4,400", "url": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "_about": "The default new hire for the evaluation cases. Synthetic: matches samples/pay_stub.pdf (Denver, PPO 750 employee only, 6% pre-tax 401(k)). Cases change single keys with profile_overrides. The first six keys are the app's quiz questions; the rest are assumptions the quiz does not ask yet.",
+
+  "filing_status": "single",
+  "city": "Denver",
+  "coverage": "employee_only",
+  "doctor_visits": "rarely",
+  "emergency_fund_months": 3,
+  "student_loans": [
+    { "balance": 25000, "rate_percent": 4.5, "term_years": 10, "type": "federal" }
+  ],
+
+  "state": "CO",
+  "health_plan": "PPO 750",
+  "retirement_401k_percent": 6,
+  "retirement_401k_type": "traditional",
+  "espp_percent": 10,
+  "savings_goal_per_check": 600,
+  "age": 23,
+  "w4": { "step2_checked": false, "step3_credits": 0, "step4a_other_income": 0, "step4b_deductions": 0, "step4c_extra": 0 },
+  "co_dr0004_submitted": false
+}

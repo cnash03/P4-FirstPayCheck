@@ -1,0 +1,59 @@
+{
+  "id": "ex1-tyler-take-home",
+  "example": 1,
+  "variant_of": "ex1-take-home",
+  "analysis": "paycheck",
+  "question": "My offer says 85k. What actually hits my account every two weeks?",
+  "source": "proposal Appendix A, Tyler profile (rounded salary band, no local tax)",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["tyler_2026_benefits_summary.pdf"],
+  "profile": "tyler",
+  "fields": [
+    { "id": "tyler_2026_benefits_summary.pdf:health.premium:PPO 750:employee_only", "name": "health.premium", "value": 69.30, "unit": "usd_per_paycheck", "plan": "PPO 750", "coverage_tier": "employee_only", "doc": "tyler_2026_benefits_summary.pdf", "page": 3 }
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary (typed in the quiz)", "value": 85000, "unit": "usd_per_year", "graded": false, "from_profile": "annual_salary" },
+      { "id": "medical_premium", "label": "Medical (PPO 750, employee only), pre-tax", "value": 69.30, "unit": "usd_per_paycheck", "from_field": "tyler_2026_benefits_summary.pdf:health.premium:PPO 750:employee_only" },
+
+      { "id": "gross_pay", "label": "Gross pay per check", "value": 3269.23, "unit": "usd_per_paycheck", "derivation": "annual_salary / 26" },
+      { "id": "pretax_401k", "label": "401(k) 6% pre-tax", "value": 196.15, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.06" },
+      { "id": "income_tax_wages", "label": "Wages subject to federal and Colorado income tax", "value": 3003.78, "unit": "usd_per_paycheck", "graded": false, "derivation": "gross_pay - pretax_401k - medical_premium" },
+      { "id": "fica_wages", "label": "Wages subject to Social Security, Medicare and FAMLI", "value": 3199.93, "unit": "usd_per_paycheck", "graded": false, "derivation": "gross_pay - medical_premium" },
+
+      { "id": "federal_withholding", "label": "Federal income tax withholding", "value": 321.22, "unit": "usd_per_paycheck", "derivation": "(5800 + 0.22 * (income_tax_wages * 26 - 8600 - 57900)) / 26" },
+      { "id": "social_security", "label": "Social Security (6.2%)", "value": 198.40, "unit": "usd_per_paycheck", "derivation": "fica_wages * 0.062" },
+      { "id": "medicare", "label": "Medicare (1.45%)", "value": 46.40, "unit": "usd_per_paycheck", "derivation": "fica_wages * 0.0145" },
+      { "id": "colorado_withholding", "label": "Colorado income tax withholding", "value": 122.86, "unit": "usd_per_paycheck", "derivation": "(income_tax_wages * 26 - 5500) * 0.044 / 26" },
+      { "id": "colorado_famli", "label": "Colorado FAMLI (0.44% employee share)", "value": 14.08, "unit": "usd_per_paycheck", "derivation": "fica_wages * 0.0044" },
+
+      { "id": "net_pay", "label": "Net pay per check", "value": 2300.82, "unit": "usd_per_paycheck", "derivation": "gross_pay - pretax_401k - medical_premium - federal_withholding - social_security - medicare - colorado_withholding - colorado_famli" },
+      { "id": "employer_match", "label": "Tyler 401(k) match (not in take-home)", "value": 98.08, "unit": "usd_per_paycheck", "graded": false, "derivation": "gross_pay * 0.03" }
+    ],
+    "must_include": [
+      "Gross pay per check is $85,000 / 26 = about $3,269.23.",
+      "Each deduction on its own line: 401(k), medical premium, federal withholding, Social Security, Medicare, Colorado income tax, Colorado FAMLI.",
+      "Net pay of about $2,301 per check.",
+      "No local occupational tax, since the city has none.",
+      "Says the 401(k) is pre-tax for income tax but still pays Social Security and Medicare.",
+      "Links the PPO 750 premium to page 3 of the Tyler summary."
+    ],
+    "must_not_include": [
+      "A Denver occupational privilege tax line.",
+      "The synthetic guide's $62.00 PPO 750 premium."
+    ],
+    "citations": [{ "doc": "tyler_2026_benefits_summary.pdf", "page": 3 }],
+    "tools": ["search_documents", "paycheck"]
+  },
+  "assumptions": [
+    "Profile 'tyler': single, Colorado city with no local tax, employee-only PPO 750, 6% traditional 401(k), no dental or vision.",
+    "Salary is a rounded band midpoint typed in the quiz; there is no offer letter document for this case.",
+    "Same W-4, DR 0004, Section 125 and rounding assumptions as ex1-take-home."
+  ],
+  "sources": [
+    { "what": "Federal withholding: Pub 15-T Worksheet 1A, Single STANDARD schedule", "url": "https://www.irs.gov/pub/irs-pdf/p15t.pdf", "tax_year": 2026 },
+    { "what": "Colorado withholding: DR 1098, $5,500 default allowance, 4.40%", "url": "https://tax.colorado.gov/sites/default/files/documents/DR_1098_Colorado_Withholding_Worksheet_for_Employees.pdf", "tax_year": 2026 },
+    { "what": "Colorado FAMLI 0.88%, 0.44% employee share", "url": "https://famli.colorado.gov/individuals-and-families/how-famli-works/premium-and-benefits-calculator", "tax_year": 2026 }
+  ]
+}

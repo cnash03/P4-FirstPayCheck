@@ -1,0 +1,23 @@
+{
+  "_about": "A Tyler new hire, for cases on the Tyler 2026 benefits summary. Values are rounded and non-identifying: salary is a band midpoint typed in the quiz, not read from a real offer letter. No local wage tax.",
+
+  "filing_status": "single",
+  "city": "colorado_no_local_tax",
+  "coverage": "employee_only",
+  "doctor_visits": "rarely",
+  "emergency_fund_months": 3,
+  "student_loans": [
+    { "balance": 25000, "rate_percent": 4.5, "term_years": 10, "type": "federal" }
+  ],
+
+  "annual_salary": 85000,
+  "pay_frequency": "biweekly",
+  "state": "CO",
+  "health_plan": "PPO 750",
+  "retirement_401k_percent": 6,
+  "retirement_401k_type": "traditional",
+  "espp_percent": 10,
+  "savings_goal_per_check": 600,
+  "w4": { "step2_checked": false, "step3_credits": 0, "step4a_other_income": 0, "step4b_deductions": 0, "step4c_extra": 0 },
+  "co_dr0004_submitted": false
+}

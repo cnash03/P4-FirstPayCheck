@@ -1,0 +1,60 @@
+{
+  "id": "ex3-match-then-roth",
+  "example": 3,
+  "analysis": "contribution_order",
+  "question": "The company matches 6% of my 401(k). Should I also open a Roth IRA, and which comes first?",
+  "source": "proposal Appendix A",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["offer_letter.pdf", "benefits_guide.pdf"],
+  "profile": "default",
+  "fields": [
+    "offer_letter.pdf:offer.annual_salary",
+    "offer_letter.pdf:offer.pay_frequency",
+    "benefits_guide.pdf:retirement.match_tiers"
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary", "value": 90000, "unit": "usd_per_year", "graded": false, "from_field": "offer_letter.pdf:offer.annual_salary" },
+      { "id": "savings_goal", "label": "Savings goal per check", "value": 600, "unit": "usd_per_paycheck", "graded": false, "from_profile": "savings_goal_per_check" },
+      { "id": "gross_pay", "label": "Gross pay per check", "value": 3461.54, "unit": "usd_per_paycheck", "graded": false, "derivation": "annual_salary / 26" },
+
+      { "id": "match_percent_of_pay", "label": "Most the match is worth, as % of pay (50% of the first 6%)", "value": 3, "unit": "percent", "derivation": "0.5 * 6" },
+      { "id": "step1_401k_to_match", "label": "Step 1: 401(k) at 6% to get the full match", "value": 207.69, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.06" },
+      { "id": "match_per_check", "label": "Company match per check", "value": 103.85, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.03" },
+      { "id": "match_per_year", "label": "Company match per year", "value": 2700, "unit": "usd_per_year", "derivation": "annual_salary * 0.03" },
+
+      { "id": "roth_ira_max_per_check", "label": "Roth IRA at the 2026 limit ($7,500), per check", "value": 288.46, "unit": "usd_per_paycheck", "derivation": "7500 / 26" },
+      { "id": "step3_roth_ira", "label": "Step 3: Roth IRA from this goal", "value": 288.46, "unit": "usd_per_paycheck", "derivation": "min(roth_ira_max_per_check, savings_goal - step1_401k_to_match)" },
+      { "id": "step4_extra_401k", "label": "Step 4: extra 401(k) with what is left", "value": 103.85, "unit": "usd_per_paycheck", "derivation": "savings_goal - step1_401k_to_match - step3_roth_ira" },
+      { "id": "hsa_max_per_check_if_hdhp", "label": "Step 2 if on the HDHP: your own HSA money to the limit, per check", "value": 150.00, "unit": "usd_per_paycheck", "derivation": "(4400 - 500) / 26", "note": "Only if the user switches to the HDHP. On the default PPO 750 the HSA step is skipped." }
+    ],
+    "must_include": [
+      "Corrects the premise: the company matches 50 cents per dollar on the first 6% of pay, so the match is worth 3% of pay, not 6%; you still contribute 6% to get all of it.",
+      "Step 1 is the 401(k) at 6% (about $207.69 per check) to get the full match (about $103.85 per check, $2,700 a year).",
+      "Step 2 is the HSA, but only on the HDHP; on the PPO 750 there is no HSA, so this step is skipped.",
+      "Step 3 is a Roth IRA, about $288.46 per check to reach the $7,500 2026 limit, and $90k is under the Roth income limit.",
+      "Step 4 is extra 401(k): the $600 goal leaves about $103.85 per check after steps 1 and 3.",
+      "Says the match vests 20% per year, fully after 5 years, so leaving early forfeits part of the match.",
+      "Notes the Roth IRA is opened outside work (not a payroll deduction) and the dollars per check are what to set aside each payday."
+    ],
+    "must_not_include": [
+      "Putting money in a Roth IRA before getting the full 401(k) match.",
+      "Saying the match is 6% of pay."
+    ],
+    "citations": [
+      { "doc": "benefits_guide.pdf", "page": 7 },
+      { "doc": "offer_letter.pdf", "page": 1 }
+    ],
+    "tools": ["search_documents", "contribution_order"]
+  },
+  "assumptions": [
+    "Savings goal of $600 per check (profile 'default'); the quiz does not ask this yet.",
+    "Profile has a 3-month emergency fund, so the order starts with retirement. With no emergency fund, see ex5-loans-vs-invest and eval/edge_cases.md.",
+    "Order (match, HSA, Roth IRA, extra 401(k)) is the common rule of thumb the proposal names; a new hire confirms it before status becomes user_confirmed."
+  ],
+  "sources": [
+    { "what": "IRA limit $7,500; Roth IRA single phase-out $153,000-$168,000; 401(k) deferral limit $24,500", "url": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    { "what": "HSA self-only limit $4,400", "url": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 }
+  ]
+}

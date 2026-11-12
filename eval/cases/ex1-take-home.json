@@ -1,0 +1,72 @@
+{
+  "id": "ex1-take-home",
+  "example": 1,
+  "analysis": "paycheck",
+  "question": "My offer says 90k. What actually hits my account every two weeks?",
+  "source": "proposal Appendix A",
+  "status": "draft",
+  "tax_year": 2026,
+  "docs": ["offer_letter.pdf", "benefits_guide.pdf"],
+  "profile": "default",
+  "fields": [
+    "offer_letter.pdf:offer.annual_salary",
+    "offer_letter.pdf:offer.pay_frequency",
+    "benefits_guide.pdf:health.premium:PPO 750:employee_only",
+    "benefits_guide.pdf:retirement.match_tiers"
+  ],
+  "expected": {
+    "figures": [
+      { "id": "annual_salary", "label": "Annual salary", "value": 90000, "unit": "usd_per_year", "graded": false, "from_field": "offer_letter.pdf:offer.annual_salary" },
+      { "id": "medical_premium", "label": "Medical (PPO 750, employee only), pre-tax", "value": 62.00, "unit": "usd_per_paycheck", "from_field": "benefits_guide.pdf:health.premium:PPO 750:employee_only" },
+
+      { "id": "gross_pay", "label": "Gross pay per check", "value": 3461.54, "unit": "usd_per_paycheck", "derivation": "annual_salary / 26" },
+      { "id": "pretax_401k", "label": "401(k) 6% pre-tax", "value": 207.69, "unit": "usd_per_paycheck", "derivation": "gross_pay * 0.06" },
+
+      { "id": "income_tax_wages", "label": "Wages subject to federal and Colorado income tax", "value": 3191.85, "unit": "usd_per_paycheck", "graded": false, "derivation": "gross_pay - pretax_401k - medical_premium" },
+      { "id": "fica_wages", "label": "Wages subject to Social Security, Medicare and FAMLI", "value": 3399.54, "unit": "usd_per_paycheck", "graded": false, "derivation": "gross_pay - medical_premium", "note": "The 401(k) lowers income tax but not FICA; the Section 125 medical premium lowers both." },
+
+      { "id": "federal_withholding", "label": "Federal income tax withholding", "value": 362.59, "unit": "usd_per_paycheck", "derivation": "(5800 + 0.22 * (income_tax_wages * 26 - 8600 - 57900)) / 26", "note": "Pub 15-T 2026 Worksheet 1A: annualize, subtract $8,600 (line 1g, single, Step 2 unchecked), Single STANDARD row $57,900-$113,200: $5,800 + 22% over $57,900." },
+      { "id": "social_security", "label": "Social Security (6.2%)", "value": 210.77, "unit": "usd_per_paycheck", "derivation": "fica_wages * 0.062" },
+      { "id": "medicare", "label": "Medicare (1.45%)", "value": 49.29, "unit": "usd_per_paycheck", "derivation": "fica_wages * 0.0145" },
+      { "id": "colorado_withholding", "label": "Colorado income tax withholding", "value": 131.13, "unit": "usd_per_paycheck", "derivation": "(income_tax_wages * 26 - 5500) * 0.044 / 26", "note": "DR 1098 2026: no DR 0004, so $5,500 allowance for single; 4.40% flat." },
+      { "id": "colorado_famli", "label": "Colorado FAMLI (0.44% employee share)", "value": 14.96, "unit": "usd_per_paycheck", "derivation": "fica_wages * 0.0044" },
+      { "id": "denver_opt", "label": "Denver occupational privilege tax", "value": 5.75, "unit": "usd_per_paycheck", "note": "$5.75 per month, taken from one check a month. This case is the first check of a month (the Jan 22, 2027 pay date on the sample stub)." },
+
+      { "id": "net_pay", "label": "Net pay (first check of the month)", "value": 2417.36, "unit": "usd_per_paycheck", "derivation": "gross_pay - pretax_401k - medical_premium - federal_withholding - social_security - medicare - colorado_withholding - colorado_famli - denver_opt" },
+      { "id": "net_pay_no_opt", "label": "Net pay (a check with no Denver OPT)", "value": 2423.11, "unit": "usd_per_paycheck", "derivation": "net_pay + denver_opt" },
+      { "id": "employer_match", "label": "Employer 401(k) match (not in take-home)", "value": 103.85, "unit": "usd_per_paycheck", "graded": false, "derivation": "gross_pay * 0.03" }
+    ],
+    "must_include": [
+      "Gross pay per check is $90,000 / 26 = about $3,461.54, using the biweekly frequency from the offer letter.",
+      "Each deduction is shown on its own line: 401(k), medical premium, federal withholding, Social Security, Medicare, Colorado income tax, Colorado FAMLI, and Denver OPT.",
+      "Net pay of about $2,417 per check (about $2,423 on checks without the $5.75 Denver OPT).",
+      "Says the 401(k) and medical premium are pre-tax: the 401(k) lowers income tax but still pays Social Security and Medicare.",
+      "Says these are estimates of withholding, not the final tax bill, and that the W-4 choices change the federal line.",
+      "Links salary and pay frequency to offer_letter.pdf page 1."
+    ],
+    "must_not_include": [
+      "Taxing the full $3,461.54 for federal or Colorado income tax (ignoring pre-tax deductions).",
+      "Using the pay stub's illustrative tax lines ($312.40 federal, $136.00 Colorado) as the answer."
+    ],
+    "citations": [
+      { "doc": "offer_letter.pdf", "page": 1 },
+      { "doc": "benefits_guide.pdf", "page": 4 }
+    ],
+    "tools": ["search_documents", "paycheck"]
+  },
+  "assumptions": [
+    "Profile 'default': single, Denver, employee-only PPO 750, 6% traditional 401(k), no dental or vision, matching samples/pay_stub.pdf.",
+    "2020+ Form W-4: single, Step 2 unchecked, Steps 3 and 4 blank. No Colorado DR 0004.",
+    "Medical premium is a Section 125 deduction: exempt from income tax, Social Security, Medicare and FAMLI.",
+    "Uses 2026 tables because 2027 Pub 15-T and DR 1098 are not out yet; the sample start date is Jan 4, 2027. Re-derive when they publish.",
+    "Rounding: each line rounded to cents; net is the sum of rounded lines."
+  ],
+  "sources": [
+    { "what": "Federal withholding: Pub 15-T Worksheet 1A, line 1g $8,600, Single STANDARD schedule", "url": "https://www.irs.gov/pub/irs-pdf/p15t.pdf", "tax_year": 2026 },
+    { "what": "Social Security 6.2% to the $184,500 wage base; Medicare 1.45%", "url": "https://www.ssa.gov/oact/cola/cbb.html", "tax_year": 2026 },
+    { "what": "Colorado withholding: DR 1098, $5,500 default allowance, 4.40%", "url": "https://tax.colorado.gov/sites/default/files/documents/DR_1098_Colorado_Withholding_Worksheet_for_Employees.pdf", "tax_year": 2026 },
+    { "what": "Colorado FAMLI 0.88% of wages, up to half (0.44%) from the employee", "url": "https://famli.colorado.gov/individuals-and-families/how-famli-works/premium-and-benefits-calculator", "tax_year": 2026 },
+    { "what": "Denver OPT $5.75/month employee share on $500+/month", "url": "https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Department-of-Finance/Our-Divisions/Treasury/Business-Tax-Information", "tax_year": 2026 }
+  ],
+  "notes": "The pay stub's tax lines are illustrative (see samples/answers/pay_stub.json); its gross, 401(k) and medical lines match this case. FAMLI drops to 0.86% (0.43% employee) in 2027 per an Oct 2026 announcement; update with the 2027 tables."
+}
