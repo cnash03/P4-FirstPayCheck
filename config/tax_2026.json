@@ -1,0 +1,136 @@
+{
+  "_about": "Tax-year rates and limits the engine reads. Every leaf is {value, source, tax_year}; engine code reads values only through engine/config.py, so nothing is hard-coded in a calculator. DRAFT: hand-written by the engine until the Documents and retrieval config lands; engine/config.py is the only file to change if the final format differs. 2026 tables are used for the January 2027 cohort until the 2027 Pub 15-T and DR 1098 publish.",
+  "schema_version": "0.1",
+  "tax_year": 2026,
+
+  "pay_periods": {
+    "value": { "weekly": 52, "biweekly": 26, "semimonthly": 24, "monthly": 12 },
+    "source": "IRS Pub 15-T (2026) Worksheet 1A, Table 3",
+    "tax_year": 2026
+  },
+
+  "federal": {
+    "withholding": {
+      "line_1g": {
+        "value": { "married_filing_jointly": 12900, "single": 8600, "married_filing_separately": 8600, "head_of_household": 8600 },
+        "note": "Worksheet 1A line 1g when the Form W-4 Step 2 box is NOT checked; 0 when it is.",
+        "source": "https://www.irs.gov/pub/irs-pdf/p15t.pdf (2026) Worksheet 1A line 1g, p. 10",
+        "tax_year": 2026
+      },
+      "schedules": {
+        "note": "Annual Percentage Method rows [at_least, but_less_than (null = no cap), base_tax, rate]. Tentative annual withholding = base_tax + rate * (adjusted annual wage - at_least).",
+        "value": {
+          "standard": {
+            "married_filing_jointly": [
+              [0, 19300, 0.00, 0.00], [19300, 44100, 0.00, 0.10], [44100, 120100, 2480.00, 0.12],
+              [120100, 230700, 11600.00, 0.22], [230700, 422850, 35932.00, 0.24], [422850, 531750, 82048.00, 0.32],
+              [531750, 788000, 116896.00, 0.35], [788000, null, 206583.50, 0.37]
+            ],
+            "single": [
+              [0, 7500, 0.00, 0.00], [7500, 19900, 0.00, 0.10], [19900, 57900, 1240.00, 0.12],
+              [57900, 113200, 5800.00, 0.22], [113200, 209275, 17966.00, 0.24], [209275, 263725, 41024.00, 0.32],
+              [263725, 648100, 58448.00, 0.35], [648100, null, 192979.25, 0.37]
+            ],
+            "head_of_household": [
+              [0, 15550, 0.00, 0.00], [15550, 33250, 0.00, 0.10], [33250, 83000, 1770.00, 0.12],
+              [83000, 121250, 7740.00, 0.22], [121250, 217300, 16155.00, 0.24], [217300, 271750, 39207.00, 0.32],
+              [271750, 656150, 56631.00, 0.35], [656150, null, 191171.00, 0.37]
+            ]
+          },
+          "step2_checkbox": {
+            "married_filing_jointly": [
+              [0, 16100, 0.00, 0.00], [16100, 28500, 0.00, 0.10], [28500, 66500, 1240.00, 0.12],
+              [66500, 121800, 5800.00, 0.22], [121800, 217875, 17966.00, 0.24], [217875, 272325, 41024.00, 0.32],
+              [272325, 400450, 58448.00, 0.35], [400450, null, 103291.75, 0.37]
+            ],
+            "single": [
+              [0, 8050, 0.00, 0.00], [8050, 14250, 0.00, 0.10], [14250, 33250, 620.00, 0.12],
+              [33250, 60900, 2900.00, 0.22], [60900, 108938, 8983.00, 0.24], [108938, 136163, 20512.00, 0.32],
+              [136163, 328350, 29224.00, 0.35], [328350, null, 96489.63, 0.37]
+            ],
+            "head_of_household": [
+              [0, 12075, 0.00, 0.00], [12075, 20925, 0.00, 0.10], [20925, 45800, 885.00, 0.12],
+              [45800, 64925, 3870.00, 0.22], [64925, 112950, 8077.50, 0.24], [112950, 140175, 19603.50, 0.32],
+              [140175, 332375, 28315.50, 0.35], [332375, null, 95585.50, 0.37]
+            ]
+          }
+        },
+        "source": "https://www.irs.gov/pub/irs-pdf/p15t.pdf (2026) Percentage Method Tables for Automated Payroll Systems, p. 12. Married filing separately uses the Single rows.",
+        "tax_year": 2026
+      }
+    },
+    "social_security": {
+      "employee_rate": { "value": 0.062, "source": "https://www.ssa.gov/oact/cola/cbb.html", "tax_year": 2026 },
+      "wage_base": { "value": 184500, "source": "https://www.ssa.gov/oact/cola/cbb.html", "tax_year": 2026 }
+    },
+    "medicare": {
+      "employee_rate": { "value": 0.0145, "source": "https://www.irs.gov/pub/irs-pdf/p15.pdf (2026) section 9", "tax_year": 2026 },
+      "additional_rate": { "value": 0.009, "source": "https://www.irs.gov/pub/irs-pdf/p15.pdf (2026) section 9, Additional Medicare Tax withholding", "tax_year": 2026 },
+      "additional_threshold": { "value": 200000, "note": "Employer withholds the additional rate on wages over this amount in the calendar year, regardless of filing status.", "source": "https://www.irs.gov/pub/irs-pdf/p15.pdf (2026) section 9", "tax_year": 2026 }
+    }
+  },
+
+  "colorado": {
+    "withholding": {
+      "allowance": {
+        "value": { "married_filing_jointly": 11000, "single": 5500, "married_filing_separately": 5500, "head_of_household": 5500 },
+        "note": "DR 1098 line 2a when the employee did not submit a DR 0004.",
+        "source": "https://tax.colorado.gov/sites/default/files/documents/DR_1098_Colorado_Withholding_Worksheet_for_Employees.pdf (DR 1098 10/21/25) line 2a",
+        "tax_year": 2026
+      },
+      "rate": {
+        "value": 0.044,
+        "source": "https://tax.colorado.gov/sites/default/files/documents/DR_1098_Colorado_Withholding_Worksheet_for_Employees.pdf (DR 1098 10/21/25) line 2c",
+        "tax_year": 2026
+      }
+    },
+    "famli": {
+      "employee_rate": { "value": 0.0044, "note": "0.88% premium, up to half from the employee. Drops to 0.86% (0.43%) in 2027.", "source": "https://famli.colorado.gov/individuals-and-families/how-famli-works/premium-and-benefits-calculator", "tax_year": 2026 },
+      "wage_base": { "value": 184500, "note": "FAMLI premiums stop at the Social Security wage base.", "source": "https://famli.colorado.gov/individuals-and-families/how-famli-works/premium-and-benefits-calculator", "tax_year": 2026 }
+    }
+  },
+
+  "local": {
+    "note": "Colorado occupational privilege taxes, employee share. Keys are city names as the quiz writes them. TODO (Documents and retrieval): Aurora, Greenwood Village, Glendale and Sheridan, with sources.",
+    "value": {
+      "Denver": { "employee_monthly": 5.75, "min_monthly_wages": 500 }
+    },
+    "source": "https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Department-of-Finance/Our-Divisions/Treasury/Business-Tax-Information",
+    "tax_year": 2026
+  },
+
+  "retirement": {
+    "deferral_limit_401k": { "value": 24500, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "catch_up_401k": { "value": 8000, "note": "Age 50 or older.", "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "catch_up_age_401k": { "value": 50, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "ira_limit": { "value": 7500, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "ira_catch_up": { "value": 1100, "note": "Age 50 or older.", "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "catch_up_age_ira": { "value": 50, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "roth_ira_phaseout": {
+      "value": {
+        "single": [153000, 168000], "head_of_household": [153000, 168000],
+        "married_filing_jointly": [242000, 252000], "married_filing_separately": [0, 10000]
+      },
+      "note": "[start, end] of modified AGI over which the Roth IRA limit phases to zero.",
+      "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500",
+      "tax_year": 2026
+    },
+    "roth_ira_phaseout_round_up_to": { "value": 10, "note": "A reduced limit is rounded up to the next multiple of this.", "source": "https://www.irs.gov/pub/irs-pdf/p590a.pdf, Figuring Your Reduced Roth IRA Contribution Limit", "tax_year": 2026 },
+    "roth_ira_phaseout_minimum": { "value": 200, "note": "A reduced limit above zero but below this is raised to this.", "source": "https://www.irs.gov/pub/irs-pdf/p590a.pdf, Figuring Your Reduced Roth IRA Contribution Limit", "tax_year": 2026 }
+  },
+
+  "hsa": {
+    "limit": { "value": { "self_only": 4400, "family": 8750 }, "note": "Includes employer contributions.", "source": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 },
+    "catch_up": { "value": 1000, "note": "Age 55 or older.", "source": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 },
+    "catch_up_age": { "value": 55, "source": "https://www.irs.gov/pub/irs-drop/rp-25-19.pdf", "tax_year": 2026 }
+  },
+
+  "espp": {
+    "section_423_annual_limit": { "value": 25000, "note": "Stock valued at the offering-start price, per calendar year.", "source": "https://www.irs.gov/taxtopics/tc427", "tax_year": 2026 }
+  },
+
+  "planning": {
+    "emergency_fund_target_months": { "value": 3, "note": "Rule of thumb, not a tax rule: months of expenses saved before the ESPP, Roth IRA or extra 401(k).", "source": "FirstPaycheck proposal, contribution order (Appendix A examples 3-5)", "tax_year": 2026 },
+    "max_employer_stock_percent": { "value": 10, "note": "Rule of thumb, not a tax rule: keep employer stock to about this share of investments.", "source": "FirstPaycheck proposal, Appendix A example 4 sell-or-hold rule of thumb; eval/cases/ex4-espp.json", "tax_year": 2026 }
+  }
+}
