@@ -124,6 +124,7 @@ def _local_tax(city, gross_pay, periods, include_monthly_local_tax, config):
 
 def paycheck(annual_salary, pay_frequency, filing_status, *, retirement_401k_percent=0,
              retirement_401k_type="traditional", pretax_deductions=None, after_tax_deductions=None,
+             other_taxable_earnings=None,
              state="CO", city=None, w4=None, co_dr0004_allowance=None, co_dr0004_extra=0,
              include_monthly_local_tax=True, ytd_fica_wages=0, ytd_401k=0, config=None):
     """Net pay for one check, with each deduction on its own line.
@@ -131,6 +132,9 @@ def paycheck(annual_salary, pay_frequency, filing_status, *, retirement_401k_per
     annual_salary: usd_per_year. pay_frequency: weekly | biweekly | semimonthly | monthly.
     retirement_401k_percent: 0-100. pretax_deductions: Section 125 amounts per check,
     e.g. {"medical": 62.00}. after_tax_deductions: per check, e.g. {"espp": 346.15}.
+    other_taxable_earnings: extra pay per check taxed as regular wages, e.g. unused benefit
+    credits paid as cash or a stipend: {"benefits_cash": 53.38}. The 401(k) percent applies
+    to base salary only, since plans differ on whether such pay is eligible.
     include_monthly_local_tax: True for the check that carries the monthly city tax.
     ytd_fica_wages / ytd_401k: year-to-date amounts before this check, for the Social
     Security wage base, the Additional Medicare threshold and the 401(k) limit.
@@ -143,18 +147,28 @@ def paycheck(annual_salary, pay_frequency, filing_status, *, retirement_401k_per
         raise ValueError("retirement_401k_type must be 'traditional' or 'roth'")
     pretax_deductions = pretax_deductions or {}
     after_tax_deductions = after_tax_deductions or {}
+    other_taxable_earnings = other_taxable_earnings or {}
     require_non_negative(annual_salary=annual_salary, retirement_401k_percent=retirement_401k_percent,
                          ytd_fica_wages=ytd_fica_wages, ytd_401k=ytd_401k,
-                         **pretax_deductions, **after_tax_deductions)
+                         **pretax_deductions, **after_tax_deductions, **other_taxable_earnings)
     if retirement_401k_percent > 100:
         raise ValueError("retirement_401k_percent is 0-100")
 
     periods = periods_per_year(pay_frequency, config)
-    gross = cents(annual_salary / periods)
+    base = cents(annual_salary / periods)
+    extra_earnings = cents(sum(other_taxable_earnings.values()))
+    gross = cents(base + extra_earnings)
     section_125 = cents(sum(pretax_deductions.values()))
 
-    limit_left = max(0, config.get("retirement.deferral_limit_401k") - ytd_401k)
-    contribution_401k = cents(min(gross * retirement_401k_percent / 100, limit_left))
+    warnings = []
+    limit_401k = config.get("retirement.deferral_limit_401k")
+    planned_401k_year = annual_salary * retirement_401k_percent / 100
+    if planned_401k_year > limit_401k:
+        warnings.append(f"{retirement_401k_percent:g}% of pay is ${planned_401k_year:,.2f} a year, over the "
+                        f"${limit_401k:,} 401(k) limit; contributions stop once the year's total reaches it "
+                        "(pass ytd_401k to see a later check).")
+    limit_left = max(0, limit_401k - ytd_401k)
+    contribution_401k = cents(min(base * retirement_401k_percent / 100, limit_left))
     pretax_401k = contribution_401k if retirement_401k_type == "traditional" else 0.0
     roth_401k = contribution_401k - pretax_401k
 
@@ -209,6 +223,8 @@ def paycheck(annual_salary, pay_frequency, filing_status, *, retirement_401k_per
         "tax_year": config.tax_year,
         "pay_frequency": pay_frequency,
         "periods_per_year": periods,
+        "base_pay": base,
+        "other_taxable_earnings": {name: cents(amount) for name, amount in other_taxable_earnings.items()},
         "gross_pay": gross,
         "income_tax_wages": income_tax_wages,
         "fica_wages": fica_wages,
@@ -220,6 +236,7 @@ def paycheck(annual_salary, pay_frequency, filing_status, *, retirement_401k_per
         "federal_worksheet": federal["worksheet"],
         "colorado_worksheet": colorado["worksheet"],
         "notes": notes,
+        "warnings": warnings,
         "sources": [config.source("federal.withholding.schedules"), config.source("colorado.withholding.rate"),
                     config.source("federal.social_security.employee_rate"), config.source("colorado.famli.employee_rate")],
     }

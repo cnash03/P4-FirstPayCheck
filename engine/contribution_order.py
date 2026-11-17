@@ -62,7 +62,7 @@ def roth_ira_limit(modified_agi, filing_status, age=None, config=None):
 def contribution_order(annual_salary, pay_frequency, match_tiers, savings_goal_per_check, *,
                        emergency_fund_months, hsa_eligible_plan=False, employer_hsa_annual=0,
                        coverage="employee_only", filing_status="single", modified_agi=None,
-                       age=None, config=None):
+                       age=None, employer_nonmatch_annual=0, config=None):
     """Split a per-check savings goal across the accounts, in order.
 
     annual_salary: usd_per_year. match_tiers: from retirement.match_tiers.
@@ -70,10 +70,14 @@ def contribution_order(annual_salary, pay_frequency, match_tiers, savings_goal_p
     emergency_fund_months: months of expenses already saved (quiz).
     modified_agi: for the Roth IRA phase-out; defaults to annual_salary (errs toward
       reducing the Roth limit, never toward allowing too much).
+    employer_nonmatch_annual: employer 401(k) money that doesn't depend on yours (profit
+      sharing, a fixed contribution, unspent benefit credit swept in), usd_per_year. It is
+      not take-home pay and doesn't use your deferral limit, but it shares the 415(c) limit.
     """
     config = resolve(config)
     require_non_negative(annual_salary=annual_salary, savings_goal_per_check=savings_goal_per_check,
-                         emergency_fund_months=emergency_fund_months, employer_hsa_annual=employer_hsa_annual)
+                         emergency_fund_months=emergency_fund_months, employer_hsa_annual=employer_hsa_annual,
+                         employer_nonmatch_annual=employer_nonmatch_annual)
     periods = periods_per_year(pay_frequency, config)
     gross = cents(annual_salary / periods)
     remaining = cents(savings_goal_per_check)
@@ -87,18 +91,28 @@ def contribution_order(annual_salary, pay_frequency, match_tiers, savings_goal_p
                       "per_year": cents(amount * periods), **({"note": note} if note else {})})
         return amount
 
-    limit_401k = config.get("retirement.deferral_limit_401k")
-    if age is not None and age >= config.get("retirement.catch_up_age_401k"):
-        limit_401k += config.get("retirement.catch_up_401k")
-    max_401k_per_check = limit_401k / periods
+    # Your own 401(k) room: the deferral limit, and also what the total-additions (415(c)) limit
+    # leaves after employer money (full match + non-match). Catch-up sits outside 415(c).
+    full_pct = full_match_percent(match_tiers)
+    employer_annual_at_full_match = annual_salary * match_percent_of_pay(full_pct, match_tiers) / 100 \
+        + employer_nonmatch_annual
+    total_limit = config.get("retirement.total_additions_limit_415c")
+    regular_room = max(0, min(config.get("retirement.deferral_limit_401k"), total_limit - employer_annual_at_full_match))
+    if employer_annual_at_full_match >= total_limit:
+        warnings.append(f"Employer 401(k) money (${employer_annual_at_full_match:,.2f}) reaches the ${total_limit:,} "
+                        "total limit, so there is no room for your own regular contributions.")
+    catch_up = (config.get("retirement.catch_up_401k")
+                if age is not None and age >= config.get("retirement.catch_up_age_401k") else 0)
+    max_401k_per_check = (regular_room + catch_up) / periods
 
     # 1. 401(k) to the full match.
-    full_pct = full_match_percent(match_tiers)
     to_match = cents(min(gross * full_pct / 100, max_401k_per_check))
     if savings_goal_per_check < to_match:
         warnings.append(f"The savings goal is less than the {full_pct:g}% of pay needed for the full match; "
                         "all of it goes to the 401(k) and part of the match is missed.")
-    step1 = add("401k_to_match", f"401(k) at {full_pct:g}% of pay for the full match", to_match)
+    step1 = add("401k_to_match",
+                f"401(k) at {full_pct:g}% of pay for the full match" if full_pct else "401(k) for the match",
+                to_match, None if full_pct else "This plan has no match, so this step is $0.")
     contributed_pct = full_pct if step1 == to_match else (step1 / gross * 100 if gross else 0)
     match_pct = match_percent_of_pay(contributed_pct, match_tiers)
     match_per_check = cents(gross * match_pct / 100)
@@ -136,6 +150,10 @@ def contribution_order(annual_salary, pay_frequency, match_tiers, savings_goal_p
         "match_percent_of_pay": match_pct,
         "match_per_check": match_per_check,
         "match_per_year": cents(annual_salary * match_pct / 100),
+        "employer_nonmatch_per_check": cents(employer_nonmatch_annual / periods),
+        "employer_nonmatch_per_year": cents(employer_nonmatch_annual),
+        "employer_401k_total_per_year": cents(annual_salary * match_pct / 100 + employer_nonmatch_annual),
+        "your_401k_room_per_year": cents(regular_room + catch_up),
         "steps": steps,
         "left_over_per_check": remaining,
         "warnings": warnings,

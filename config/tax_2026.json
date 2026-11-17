@@ -101,6 +101,7 @@
 
   "retirement": {
     "deferral_limit_401k": { "value": 24500, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
+    "total_additions_limit_415c": { "value": 72000, "note": "Employee deferrals plus all employer money (match, non-match, credits swept in) per year; catch-up contributions don't count.", "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
     "catch_up_401k": { "value": 8000, "note": "Age 50 or older.", "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
     "catch_up_age_401k": { "value": 50, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },
     "ira_limit": { "value": 7500, "source": "https://www.irs.gov/newsroom/401k-limit-increases-to-24500-for-2026-ira-limit-increases-to-7500", "tax_year": 2026 },

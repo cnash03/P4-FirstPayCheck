@@ -16,6 +16,9 @@ Units: `usd_per_year`, `usd_per_paycheck`, `percent` (0–100, so 6 means 6%), `
 | `health.coinsurance_percent` | percent | Benefits guide, per plan (synthetic guide p. 4: 20 / 20 / 10) | `benefits_cost`, only for an expected-claims year |
 | `espp.months_until_eligible` | months | Benefits guide (Tyler summary p. 6: six months of service) | `espp` |
 | `health.premium` for dental and vision | usd_per_paycheck | Benefits guide (synthetic p. 6) | `paycheck` (Section 125 lines) |
+| `benefits.employer_credit` | usd_per_year | Offer letter or benefits guide (benefits fund / flex credits) | `benefits_cost` |
+| `benefits.credit_leftover_to` | enum: forfeit, 401k, cash | Same place as the credit | `benefits_cost` |
+| `retirement.employer_nonmatch` | usd_per_year | Offer letter or benefits guide (profit sharing, fixed employer contribution) | `contribution_order` |
 
 ## `paycheck`: take-home pay per check (Example 1)
 
@@ -28,6 +31,7 @@ Units: `usd_per_year`, `usd_per_paycheck`, `percent` (0–100, so 6 means 6%), `
 | `retirement_401k_type` | enum: traditional, roth | Quiz | Default traditional. |
 | `pretax_deductions` | {name: usd_per_paycheck} | Doc `health.premium:<plan>:<tier>` for the chosen plan and tier (quiz `health_plan`, `coverage`); dental/vision premiums; payroll HSA | Section 125: lowers every tax. |
 | `after_tax_deductions` | {name: usd_per_paycheck} | `espp` result `per_check` | Lowers net pay only. |
+| `other_taxable_earnings` | {name: usd_per_paycheck} | `benefits_cost` result `credit_left_over_per_check` (cash), stipends | Taxed as regular wages; 401(k) % applies to base only. |
 | `state` | enum: CO | Quiz | Only Colorado is supported. |
 | `city` | string | Quiz | Matched to `local` in the config (Denver today). |
 | `w4` | {step2_checked: boolean, step3_credits, step4a_other_income, step4b_deductions: usd_per_year, step4c_extra: usd_per_paycheck} | Quiz (W-4 answers) | Defaults: unchecked, all 0. |
@@ -57,9 +61,11 @@ Config: `pay_periods`, `federal.withholding.*` (Pub 15-T line 1g and schedules),
 | `federal_marginal_rate` | fraction (0.22) | `paycheck` result `federal_marginal_rate` | Optional override of the bracket. |
 | `expected_claims` | usd_per_year | Quiz ("expect surgery" / doctor visits) | Optional middle scenario. |
 | `age` | count (years) | Quiz | HSA catch-up at 55+. |
+| `employer_credit_annual` | usd_per_year | Doc `benefits.employer_credit` (new) | Benefits fund toward premiums. Default 0. |
+| `leftover_credit_to` | enum: forfeit, 401k, cash | Doc `benefits.credit_leftover_to` (new) | Cash is valued after tax and needs `annual_salary`. |
 
-Config: `pay_periods`, `hsa.*`, `colorado.withholding.rate`, `federal.social_security.*`, `federal.medicare.employee_rate`,
-`federal.withholding.*`.
+Config: `pay_periods`, `hsa.*`, `colorado.withholding.rate`, `colorado.famli.*`, `federal.social_security.*`,
+`federal.medicare.employee_rate`, `federal.withholding.*`.
 
 ## `contribution_order`: where saved dollars go first (Examples 3 and 5)
 
@@ -76,6 +82,7 @@ Config: `pay_periods`, `hsa.*`, `colorado.withholding.rate`, `federal.social_sec
 | `filing_status` | enum | Quiz | Roth IRA phase-out range. |
 | `modified_agi` | usd_per_year | Quiz (optional) | Defaults to `annual_salary`. |
 | `age` | count (years) | Quiz | 401(k) and IRA catch-up at 50+, HSA at 55+. |
+| `employer_nonmatch_annual` | usd_per_year | Doc `retirement.employer_nonmatch` (new); plus leftover credit when it goes to the 401(k) | Shares the 415(c) limit with your contributions. |
 
 Config: `pay_periods`, `retirement.*`, `hsa.*`, `planning.emergency_fund_target_months`.
 
