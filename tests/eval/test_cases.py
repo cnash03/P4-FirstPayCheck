@@ -6,7 +6,7 @@ that match their document or profile, and derivations that recompute exactly.
 """
 import pytest
 
-from cases import CASES, check_case, evaluate, load_case, load_cases
+from eval.cases import CASES, check_case, evaluate, load_case, load_cases
 
 ALL = load_cases()
 IDS = {c["id"] for c in ALL}

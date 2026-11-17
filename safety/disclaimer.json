@@ -1,0 +1,12 @@
+{
+  "_about": "Advisor disclaimer wording for the app (Kaelem) and the agent (Shawn). Draft from the proposal's 'Advice vs education' risk; Callen to confirm with the user before Nov 25 testing. Import this file rather than copying the text, so one edit changes every screen.",
+  "status": "draft",
+  "plan_screen": "FirstPaycheck explains your options and shows the math. It is not financial, tax, or legal advice. Confirm decisions with HR or a licensed advisor.",
+  "estimate_note": "These numbers are estimates from your documents and this year's tax tables. Your actual paycheck and costs may differ.",
+  "chat_footer": "Education, not advice: check with HR or a licensed advisor before you decide.",
+  "where": {
+    "plan_screen": "Every screen that shows a plan, recommendation or dollar amount (proposal: 'Every plan screen carries a short note').",
+    "estimate_note": "Next to take-home pay, plan cost, and contribution figures.",
+    "chat_footer": "Under each agent answer in the chat panel."
+  }
+}
