@@ -1,8 +1,9 @@
 """Redaction: no name, address, employee ID, SSN, phone number, email, date of
 birth or bank account number survives, and nothing else is removed.
 
-The proposal's check also covers stored text and text sent to the model;
-those tests are added with the SQLite store (Docs 6) and the search tool.
+Covers the proposal's safety check: uploading a synthetic pay stub leaves no name,
+address, employee ID or SSN in anything saved (the SQLite store, tested on the raw
+file bytes) or sent to the model (which only ever reads pages from that store).
 """
 import json
 import re
@@ -14,7 +15,11 @@ from parse import Page, parse_pdf
 from redact import redact_pages
 
 SAMPLES = Path(__file__).resolve().parents[2] / "samples"
-DOCS = ["offer_letter", "benefits_guide", "pay_stub"]
+# pay_stub_payroll is the hard one: name in capitals, last name first and unlabeled
+# above the address, no comma in the city line, a file number, a masked SSN, and the
+# name and file number repeated on page 2 without labels.
+DOCS = ["offer_letter", "benefits_guide", "pay_stub", "pay_stub_payroll"]
+PAY_STUBS = ["pay_stub", "pay_stub_payroll"]
 
 
 def norm(text):
@@ -83,15 +88,39 @@ REMOVED = [
     ("SSN nine digits", ["SSN: 900123456"], "900123456", "SSN:"),
     ("SSN long label", ["Social Security Number: 900123456"], "900123456", "Social Security Number:"),
     ("SSN without a label", ["Ref 900-12-3456 on file"], "900-12-3456", "on file"),
+    ("SSN dotted", ["SSN 900.12.3456"], "3456", "SSN"),
+    ("SSN masked, no dashes", ["SSN: xxxx3456"], "3456", "SSN:"),
+    ("SSN last four alone", ["SSN (last 4): 3456"], "3456", "SSN"),
+    ("SS#", ["SS#: 900-12-3456"], "3456", "SS#:"),
+    ("Social Security #", ["Social Security #: ***-**-3456"], "3456", "Social Security #:"),
+    ("ITIN", ["ITIN: 912-70-1234"], "1234", "ITIN:"),
     ("employee ID", ["Employee ID: FRC-104823"], "104823", "Employee ID:"),
     ("Emp ID", ["Emp ID: 104823"], "104823", "Emp ID:"),
     ("Employee #", ["Employee #: 104823"], "104823", "Employee #:"),
     ("Employee No.", ["Employee No. 104823"], "104823", "Employee No."),
+    ("Employee Number", ["Employee Number: 104823"], "104823", "Employee Number:"),
+    ("File #", ["File #: 104823"], "104823", "File #:"),
+    ("Associate ID", ["Associate ID: ABC123"], "ABC123", "Associate ID:"),
+    ("Worker ID", ["Worker ID: 5521"], "5521", "Worker ID:"),
+    ("Badge #", ["Badge #: 7781"], "7781", "Badge #:"),
+    ("ID repeated without its label", ["Employee ID: 104823", "Emp 104823 YTD"], "104823", "YTD"),
+    ("digits of a lettered ID", ["Employee ID: FRC-104823", "File 104823"], "104823", "File"),
+    ("account repeated without its label", ["Account number: 000123456789", "Ref 000123456789"],
+     "000123456789", "Ref"),
     ("street with unit", ["999 Fictional Way, Unit 0"], "Fictional Way", ""),
     ("street with Apt", ["12 Oak St Apt 4B"], "Oak St", ""),
     ("street with direction", ["4821 W Larkspur Ave"], "Larkspur", ""),
     ("city line", ["Denver, CO 80299"], "80299", ""),
     ("city line ZIP+4", ["Golden, CO 80401-1887"], "80401", ""),
+    ("city line, no comma", ["Denver CO 80299"], "80299", ""),
+    ("city line in capitals", ["GOLDEN CO 80401"], "GOLDEN", ""),
+    ("two-word city", ["Colorado Springs, CO 80903"], "Springs", ""),
+    ("street in capitals", ["1234 MAIN ST"], "MAIN", ""),
+    ("numbered street", ["1234 E. 17th Ave"], "17th", ""),
+    ("ordinal street with Apt.", ["55 W 1st Avenue Apt. 2"], "1st", ""),
+    ("highway", ["12 Pine Hwy"], "Pine", ""),
+    ("PO box", ["PO Box 1234"], "1234", ""),
+    ("P.O. box", ["P.O. Box 77"], "Box 77", ""),
     # Names are found only through a cue (Dear, Employee:, Candidate:). A name with
     # no cue anywhere, such as only a "Signed:" line, is not redacted and has no
     # test yet; how to handle it (more cues or a named-entity model) is to be
@@ -106,6 +135,20 @@ REMOVED = [
     ("apostrophe", ["Dear Sean O'Brien,"], "Brien", "Dear"),
     ("accents", ["Dear María García,"], "García", "Dear"),
     ("hyphenated surname", ["Dear Ana Ruiz-Lopez,"], "Ruiz", "Dear"),
+    ("first name only after Dear", ["Dear Riley,"], "Riley", "Dear"),
+    ("Name: at line start", ["Name: Riley Marchetti"], "Marchetti", "Name:"),
+    ("Employee Name in capitals", ["Employee Name: MARCHETTI, RILEY Q"], "MARCHETTI", "Employee Name:"),
+    ("last name first", ["Employee: Marchetti, Riley", "Riley, welcome."], "Riley", "welcome"),
+    ("capitals teach the capitalized form", ["Employee Name: MARCHETTI, RILEY", "Riley Marchetti"],
+     "Marchetti", ""),
+    ("pay to the order of", ["Pay to the order of: Riley Marchetti"], "Marchetti", "Pay to the order of"),
+    ("cued name cut at a label", ["Employee: Riley Marchetti Pay Date: 01/22/2027"], "Marchetti",
+     "Pay Date: 01/22/2027"),
+    ("name above a street, no label", ["RILEY Q MARCHETTI\n1234 MAIN ST\nDENVER CO 80299"], "MARCHETTI", ""),
+    ("name above a street, beside the company", [
+        "MARCHETTI, RILEY Q          Front Range Civic Software, Inc.\n"
+        "4821 W LARKSPUR AVE         1600 Placeholder Plaza"], "MARCHETTI", "Front Range Civic Software, Inc."),
+    ("name above a PO box", ["Riley Marchetti\nPO Box 1234"], "Marchetti", ""),
     ("phone with parentheses", ["Phone: (303) 555-0147"], "555-0147", "Phone:"),
     ("phone with dashes", ["Cell 303-555-0147"], "555-0147", "Cell"),
     ("phone with dots", ["303.555.0147"], "555.0147", ""),
@@ -149,6 +192,11 @@ KEPT = [
     ("account with a year", "Health Savings Account 2027"),
     ("ZIP+4 alone", "Golden 80401-1887"),
     ("long plain number", "Group number 0012345678"),
+    ("account last four masked", "Deposited to checking account ****0000"),
+    ("Plan Name mid-line", "Medical Plan Name: Health Savings Plan"),
+    ("state code in prose", "PPO 75000 maximum and HSA CO 2027"),
+    ("money near a learned ID's digits", "Bonus $104,823 and 1048230 units"),
+    ("company above its own address", "Front Range Civic Software, Inc.\nquestions go to the team"),
 ]
 
 
@@ -163,7 +211,37 @@ def test_learned_name_does_not_remove_common_words():
     assert "Will" not in out and "coverage will start" in out
 
 
+def test_learned_id_does_not_remove_money():
+    out = redact("Employee ID: 104823", "Bonus $104,823 and 1048230 units")
+    assert out.endswith("Bonus $104,823 and 1048230 units")
+
+
+def test_company_above_its_address_is_not_a_name():
+    out = redact("Front Range Civic Software, Inc.\n1600 Placeholder Plaza", "Front Range Civic Software")
+    assert out.count("Front Range Civic Software") == 2
+
+
 def test_false_name_cue_does_not_spread():
     # A non-person after a cue must not be learned and removed from later pages.
     out = redact("Employee: Health Plan Coverage", "The Health plan pays 80%.")
     assert "The Health plan pays 80%." in out
+
+
+# ---- the upload path: nothing saved holds PII ----
+
+@pytest.mark.parametrize("doc", PAY_STUBS)
+def test_store_file_holds_no_pii(tmp_path, doc):
+    """Ingest a synthetic pay stub, then search the SQLite file's raw bytes (tables and
+    search index) for every PII string. The agent's search tool reads only this store."""
+    from store import get_page, ingest_file
+
+    db = tmp_path / "store.sqlite"
+    summary = ingest_file(SAMPLES / f"{doc}.pdf", db_path=db)
+    spec = json.loads((SAMPLES / "answers" / f"{doc}.json").read_text())
+
+    raw = db.read_bytes().decode("utf-8", errors="ignore")
+    leaked = [s for s in spec["pii"] if s in raw or s.upper() in raw]
+    assert leaked == [], f"{len(leaked)} PII strings saved in the store"
+    assert not any(s in json.dumps(summary) for s in spec["pii"])
+    for f in spec["fields"]:
+        assert norm(f["source_text"]) in norm(get_page(f["doc"], f["page"], db_path=db))
