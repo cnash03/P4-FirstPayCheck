@@ -1,4 +1,4 @@
-"""Build the store from PDFs: parse, redact and save every page.
+"""Build the store from PDFs: parse, redact and save every page, then extract its fields.
 
     python docs/ingest.py samples/                  # every PDF in a folder
     python docs/ingest.py samples/pay_stub.pdf      # one file
@@ -50,10 +50,10 @@ def main():
             failed += 1
             continue
         if s["skipped"]:
-            print(f"skip {s['doc']}: unchanged ({pages(s['pages'])})")
+            print(f"skip {s['doc']}: unchanged ({pages(s['pages'])}, {s['fields']} fields)")
         else:
             removed = ", ".join(f"{n} {label}" for label, n in s["redactions"].items() if n) or "nothing"
-            print(f"ok   {s['doc']}: {pages(s['pages'])}, redacted {removed}")
+            print(f"ok   {s['doc']}: {pages(s['pages'])}, {s['fields']} fields, redacted {removed}")
     print(f"{len(files) - failed} of {len(files)} files in {args.db}")
     sys.exit(1 if failed else 0)
 

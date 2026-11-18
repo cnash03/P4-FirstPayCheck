@@ -122,6 +122,9 @@
       },
       {
         "p": "Family deductibles and out-of-pocket maximums apply to every tier that covers a dependent."
+      },
+      {
+        "p": "There is no benefits credit or flex dollars toward these premiums; the amounts above are your full share."
       }
     ],
     [
@@ -170,6 +173,9 @@
       },
       {
         "p": "Vesting: your own contributions are always 100% yours. Company match contributions vest 20% per year of service and are fully vested after 5 years."
+      },
+      {
+        "p": "The company does not make profit-sharing or other non-matching contributions."
       }
     ],
     [
@@ -187,6 +193,9 @@
       },
       {
         "p": "Holding period: shares bought through the ESPP cannot be sold for 180 days after the purchase date."
+      },
+      {
+        "p": "There is no service waiting period to join the ESPP."
       },
       {
         "p": "You cannot buy more than $25,000 of stock, valued at the start of each offering period, in any calendar year, or more than 750 shares in any one offering period."
@@ -641,6 +650,117 @@
       "doc": "benefits_guide.pdf",
       "page": 2,
       "source_text": "February 3, 2027",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.coinsurance_percent:PPO 750",
+      "name": "health.coinsurance_percent",
+      "value": 20,
+      "unit": "percent",
+      "plan": "PPO 750",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "20%",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.coinsurance_percent:PPO 1500",
+      "name": "health.coinsurance_percent",
+      "value": 20,
+      "unit": "percent",
+      "plan": "PPO 1500",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "20%",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.coinsurance_percent:HDHP with HSA",
+      "name": "health.coinsurance_percent",
+      "value": 10,
+      "unit": "percent",
+      "plan": "HDHP with HSA",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "10%",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:benefits.employer_credit",
+      "name": "benefits.employer_credit",
+      "value": 0,
+      "unit": "usd_per_year",
+      "doc": "benefits_guide.pdf",
+      "page": 4,
+      "source_text": "There is no benefits credit",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:Dental:employee_only",
+      "name": "health.premium",
+      "value": 4.5,
+      "unit": "usd_per_paycheck",
+      "plan": "Dental",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 6,
+      "source_text": "$4.50 employee only",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:Dental:family",
+      "name": "health.premium",
+      "value": 12.0,
+      "unit": "usd_per_paycheck",
+      "plan": "Dental",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 6,
+      "source_text": "$12.00 family",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:Vision:employee_only",
+      "name": "health.premium",
+      "value": 1.8,
+      "unit": "usd_per_paycheck",
+      "plan": "Vision",
+      "coverage_tier": "employee_only",
+      "doc": "benefits_guide.pdf",
+      "page": 6,
+      "source_text": "$1.80 employee only",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:health.premium:Vision:family",
+      "name": "health.premium",
+      "value": 4.75,
+      "unit": "usd_per_paycheck",
+      "plan": "Vision",
+      "coverage_tier": "family",
+      "doc": "benefits_guide.pdf",
+      "page": 6,
+      "source_text": "$4.75 family",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:retirement.employer_nonmatch",
+      "name": "retirement.employer_nonmatch",
+      "value": 0,
+      "unit": "usd_per_year",
+      "doc": "benefits_guide.pdf",
+      "page": 7,
+      "source_text": "does not make profit-sharing or other non-matching contributions",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "benefits_guide.pdf:espp.months_until_eligible",
+      "name": "espp.months_until_eligible",
+      "value": 0,
+      "unit": "months",
+      "doc": "benefits_guide.pdf",
+      "page": 8,
+      "source_text": "no service waiting period",
       "status": "unconfirmed"
     }
   ]

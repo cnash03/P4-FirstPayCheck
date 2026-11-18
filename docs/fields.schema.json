@@ -43,7 +43,7 @@
         },
         "plan": {
           "type": "string",
-          "description": "Health plan name as the guide writes it, e.g. \"HDHP with HSA\". Only on health.* fields."
+          "description": "Plan name as the guide writes it, e.g. \"HDHP with HSA\"; \"Dental\" and \"Vision\" for those premiums. Only on health.* fields."
         },
         "coverage_tier": {
           "enum": ["employee_only", "employee_spouse", "employee_children", "family"],
@@ -79,14 +79,20 @@
         { "const": "health.deductible", "description": "usd_per_year. Benefits guide, per plan and coverage tier. Example 2." },
         { "const": "health.out_of_pocket_max", "description": "usd_per_year. Benefits guide, per plan and coverage tier. Needed for Example 2's high-use year." },
         { "const": "health.employer_hsa_contribution", "description": "usd_per_year. Benefits guide, HSA-eligible plans only, per coverage tier. Example 2." },
+        { "const": "health.coinsurance_percent", "description": "percent: your share of a bill after the deductible. Benefits guide, per plan. benefits_cost's expected-claims year." },
 
-        { "const": "retirement.match_tiers", "description": "match_tiers: [{\"match_percent\": 100, \"up_to_percent_of_pay\": 6}], one entry per tier. Benefits guide. Examples 3 and 5." },
+        { "const": "benefits.employer_credit", "description": "usd_per_year: a benefits credit, flex dollars or benefits fund toward premiums; 0 when the guide says there is none. benefits_cost." },
+        { "const": "benefits.credit_leftover_to", "description": "enum: forfeit | 401k | cash, where an unused credit goes. Only when there is a credit. benefits_cost." },
+
+        { "const": "retirement.match_tiers", "description": "match_tiers: [{\"match_percent\": 100, \"up_to_percent_of_pay\": 6}], one entry per tier; up_to_percent_of_pay is the top of each tier, cumulative. Benefits guide. Examples 3 and 5." },
+        { "const": "retirement.employer_nonmatch", "description": "usd_per_year: profit sharing or another employer contribution that does not depend on yours; 0 when the guide says there is none. contribution_order." },
 
         { "const": "espp.discount_percent", "description": "percent. Benefits guide. Example 4." },
         { "const": "espp.lookback", "description": "boolean: price is the lower of offering start and purchase date. Benefits guide. Example 4." },
         { "const": "espp.offering_period_months", "description": "months. Benefits guide. Example 4." },
-        { "const": "espp.holding_period_months", "description": "months, 0 when there is none. Benefits guide. Example 4's hard case." },
+        { "const": "espp.holding_period_months", "description": "months, 0 only when the guide says there is none. Not emitted when the guide does not say, so the engine treats it as unknown, never 0. Benefits guide. Example 4's hard case." },
         { "const": "espp.max_contribution_percent", "description": "percent of pay. Benefits guide. Example 4's dollar gain." },
+        { "const": "espp.months_until_eligible", "description": "months of service before you can join; 0 when the guide says there is no waiting period. Benefits guide. espp." },
 
         { "const": "enrollment.deadline", "description": "date. Benefits guide. The app's deadline checklist." },
 
