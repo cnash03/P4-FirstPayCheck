@@ -1,6 +1,6 @@
 """Offers outside Appendix A, built by chaining the calculators' generic inputs.
 
-Scenario: $100k base, the employer puts $25,000 a year into the 401(k) regardless of what you
+Scenario: $100k base, the employer puts $25,000 a year into the 401(k) regardless of what you  (privacy: allow)
 contribute, and a benefits fund (flex credits) pays for medical with the unspent part going to
 the 401(k) or paid as taxable cash. The fund amount is illustrative ($3,000 a year) on the
 synthetic guide's employee-only plans: premiums 1,612 / 988 / 468 a year. Hand-worked.
