@@ -77,7 +77,8 @@ def _now():
 def ingest_file(path, db_path=None, force=False):
     """Parse, redact, store and extract one PDF; return a summary with no PII in it.
 
-    A file with the same name replaces the earlier one, along with its fields.
+    A file with the same name replaces the earlier one, along with its fields, except that a
+    field the user confirmed stays confirmed, value included, if extraction finds it again.
     The same file again is skipped unless force=True.
     """
     path = Path(path)
@@ -94,6 +95,8 @@ def ingest_file(path, db_path=None, force=False):
         # Redact before anything is written.
         pages, counts = redact_pages(parse_pdf(path))
 
+        # The delete cascades to the fields, so keep the confirmed ones to put back after extraction.
+        confirmed = con.execute("SELECT * FROM fields WHERE doc = ? AND status = 'confirmed'", (path.name,)).fetchall()
         con.execute("DELETE FROM documents WHERE doc = ?", (path.name,))   # pages and fields cascade
         con.execute("DELETE FROM pages_fts WHERE doc = ?", (path.name,))
         con.execute("INSERT INTO documents VALUES (?, ?, ?, ?, ?)",
@@ -104,7 +107,12 @@ def ingest_file(path, db_path=None, force=False):
 
     # Extraction reads the redacted pages, the same text a citation links to.
     fields = extract_fields(path.name, pages)
-    save_fields(fields, db_path)
+    ids = {f["id"] for f in fields}
+    keep = [tuple(r) for r in confirmed if r["id"] in ids]
+    if keep:
+        with closing(connect(db_path)) as con, con:
+            con.executemany(f"INSERT INTO fields VALUES ({', '.join('?' * len(keep[0]))})", keep)
+    save_fields(fields, db_path)   # skips the confirmed fields just put back
     return {"doc": path.name, "pages": len(pages), "fields": len(fields), "redactions": dict(counts), "skipped": False}
 
 
