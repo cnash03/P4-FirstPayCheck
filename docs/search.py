@@ -9,6 +9,7 @@ import re
 import sys
 from contextlib import closing
 
+from cite import cite
 from store import connect
 
 # Words that say nothing about which page answers a question.
@@ -68,8 +69,9 @@ def to_fts_query(question):
 
 
 def search(query, k=3, doc=None, db_path=None):
-    """Return up to k pages for a question, best first: [{doc, page, snippet, score}].
+    """Return up to k pages for a question, best first: [{doc, page, cite, snippet, score}].
 
+    cite is the page's citation, [benefits_guide.pdf p4], for the answer to copy.
     score is BM25 with the sign flipped, so higher is better. doc limits the search to one document.
     """
     fts = to_fts_query(query)
@@ -82,7 +84,7 @@ def search(query, k=3, doc=None, db_path=None):
         sql, args = sql + " AND doc = ?", args + [doc]
     with closing(connect(db_path)) as con:
         rows = con.execute(sql + " ORDER BY bm25(pages_fts) LIMIT ?", args + [k]).fetchall()
-    return [{"doc": r["doc"], "page": r["page"], "snippet": re.sub(r"\s+", " ", r["snippet"]).strip(),
+    return [{"doc": r["doc"], "page": r["page"], "cite": cite(r["doc"], r["page"]), "snippet": re.sub(r"\s+", " ", r["snippet"]).strip(),
              "score": round(r["score"], 3)} for r in rows]
 
 
@@ -91,7 +93,8 @@ SEARCH_TOOL = {
     "name": "search_documents",
     "description": "Search the user's uploaded documents (offer letter, benefits guide, pay stub). "
                    "Returns the best-matching pages, each labeled with its document and page number, "
-                   "with a snippet. Cite the document and page for any value you use.",
+                   "with a snippet and its citation. Copy the citation, e.g. [benefits_guide.pdf p4], "
+                   "after any value you use from that page.",
     "input_schema": {
         "type": "object",
         "properties": {
@@ -114,7 +117,7 @@ def main():
         sys.exit('usage: python docs/search.py "<question>" [k]')
     k = int(sys.argv[2]) if len(sys.argv) > 2 else 3
     for i, hit in enumerate(search(sys.argv[1], k=k), start=1):
-        print(f"{i}. {hit['doc']} p{hit['page']}  (score {hit['score']})\n   {hit['snippet']}")
+        print(f"{i}. {hit['cite']}  (score {hit['score']})\n   {hit['snippet']}")
 
 
 if __name__ == "__main__":
