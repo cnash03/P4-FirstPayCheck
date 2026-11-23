@@ -5,7 +5,7 @@
 
   "pay_periods": {
     "value": { "weekly": 52, "biweekly": 26, "semimonthly": 24, "monthly": 12 },
-    "source": "IRS Pub 15-T (2026) Worksheet 1A, Table 3",
+    "source": "https://www.irs.gov/pub/irs-pdf/p15t.pdf (2026) Worksheet 1A, Table 3",
     "tax_year": 2026
   },
 
@@ -91,9 +91,12 @@
   },
 
   "local": {
-    "note": "Colorado occupational privilege taxes, employee share. Keys are city names as the quiz writes them. TODO (Documents and retrieval): Aurora, Greenwood Village, Glendale and Sheridan, with sources.",
+    "note": "Colorado occupational privilege taxes, employee share. Keys are city names as the quiz writes them; each city carries its own source (the engine reads only employee_monthly and min_monthly_wages, and charges the tax when monthly wages are at least min_monthly_wages). Aurora is not here: its tax was repealed effective Jan. 1, 2025 (https://www.auroragov.org/business_services/taxes/occupational_privilege_tax), so a worker there owes no city tax.",
     "value": {
-      "Denver": { "employee_monthly": 5.75, "min_monthly_wages": 500 }
+      "Denver": { "employee_monthly": 5.75, "min_monthly_wages": 500, "source": "https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Department-of-Finance/Our-Divisions/Treasury/Business-Tax-Information" },
+      "Glendale": { "employee_monthly": 5.00, "min_monthly_wages": 750, "source": "https://glendale.co.us/355/Occupational-Privilege-Tax", "note": "The city says more than $750 a month; the engine's at-least differs only at exactly $750." },
+      "Greenwood Village": { "employee_monthly": 2.00, "min_monthly_wages": 250, "source": "https://www.greenwoodvillage.com/1220/Occupational-Privilege-Tax-OPT" },
+      "Sheridan": { "employee_monthly": 3.00, "min_monthly_wages": 500, "source": "https://library.municode.com/co/sheridan/codes/code_of_ordinances?nodeId=PTIICOOR_CH62REFI_ARTVIOCPRTA", "threshold_source": "https://www.metrodenver.org/do-business/taxes-and-incentives/occupational-taxes", "note": "The city code sets the $3; the $500 threshold is from Metro Denver's table, not the city. Confirm with the city's tax office." }
     },
     "source": "https://denvergov.org/Government/Agencies-Departments-Offices/Agencies-Departments-Offices-Directory/Department-of-Finance/Our-Divisions/Treasury/Business-Tax-Information",
     "tax_year": 2026
