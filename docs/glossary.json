@@ -1,0 +1,299 @@
+{
+  "schema_version": "0.1",
+  "terms": [
+    {
+      "term": "Gross pay",
+      "aliases": ["gross", "gross salary", "earnings"],
+      "definition": "Your pay before any taxes or deductions come out, for one paycheck or for the year.",
+      "see_also": ["Net pay", "Base salary", "Deduction"]
+    },
+    {
+      "term": "Net pay",
+      "aliases": ["take-home pay", "take home", "take-home"],
+      "definition": "What actually lands in your bank account on payday, after taxes and deductions are taken out.",
+      "see_also": ["Gross pay", "Withholding", "Deduction"]
+    },
+    {
+      "term": "Base salary",
+      "aliases": ["annual salary", "salary"],
+      "definition": "The fixed yearly pay in your offer letter, before bonuses, overtime, or anything taken out.",
+      "see_also": ["Gross pay", "Pay frequency"]
+    },
+    {
+      "term": "Pay frequency",
+      "aliases": ["pay period", "pay schedule", "biweekly"],
+      "definition": "How often you are paid; biweekly means every two weeks, which is 26 paychecks in most years.",
+      "see_also": ["Gross pay", "Pay stub"]
+    },
+    {
+      "term": "Pay stub",
+      "aliases": ["paystub", "earnings statement"],
+      "definition": "The statement that comes with each paycheck and lists your gross pay, each tax and deduction, and your net pay, for that check and for the year so far.",
+      "see_also": ["Year to date", "Gross pay", "Net pay"]
+    },
+    {
+      "term": "Year to date",
+      "aliases": ["YTD"],
+      "definition": "The total so far this calendar year, as a pay stub shows it, such as your earnings or the tax withheld since January 1.",
+      "see_also": ["Pay stub"]
+    },
+    {
+      "term": "Deduction",
+      "aliases": ["deductions", "payroll deduction"],
+      "definition": "An amount taken out of your gross pay for something you signed up for, such as a health premium or a 401(k) contribution.",
+      "see_also": ["Pre-tax deduction", "After-tax deduction"]
+    },
+    {
+      "term": "Pre-tax deduction",
+      "aliases": ["pre-tax", "before-tax"],
+      "definition": "A deduction taken out before income tax is figured, so it lowers the pay you are taxed on; traditional 401(k) contributions and most health premiums work this way.",
+      "see_also": ["After-tax deduction", "Taxable wages", "401(k)"]
+    },
+    {
+      "term": "After-tax deduction",
+      "aliases": ["post-tax", "after-tax"],
+      "definition": "A deduction taken out after taxes are figured, so it does not lower your tax now; Roth 401(k) contributions and ESPP purchases work this way.",
+      "see_also": ["Pre-tax deduction", "Roth 401(k)", "ESPP"]
+    },
+    {
+      "term": "Taxable wages",
+      "aliases": ["taxable pay"],
+      "definition": "The pay left after pre-tax deductions, which is the amount income tax is figured on.",
+      "see_also": ["Pre-tax deduction", "Withholding"]
+    },
+    {
+      "term": "Withholding",
+      "aliases": ["tax withholding", "federal withholding", "withheld"],
+      "definition": "Income tax your employer takes out of each paycheck and sends to the government for you, as a prepayment on what you owe for the year.",
+      "see_also": ["W-4", "Filing status", "Tax bracket"]
+    },
+    {
+      "term": "W-4",
+      "aliases": ["Form W-4"],
+      "definition": "The IRS form you fill out when you start a job, which tells your employer how much federal income tax to withhold.",
+      "see_also": ["Withholding", "Filing status"]
+    },
+    {
+      "term": "Filing status",
+      "aliases": ["single", "married filing jointly"],
+      "definition": "The category you file your tax return under, such as single or married filing jointly, which sets your tax brackets and standard deduction.",
+      "see_also": ["Tax bracket", "W-4"]
+    },
+    {
+      "term": "Tax bracket",
+      "aliases": ["marginal rate", "marginal tax rate", "brackets"],
+      "definition": "A range of income taxed at one rate; your marginal rate is the rate on your last dollar, and moving into a higher bracket raises the tax only on the income inside it.",
+      "see_also": ["Filing status", "Withholding"]
+    },
+    {
+      "term": "FICA",
+      "aliases": ["payroll tax", "payroll taxes"],
+      "definition": "Social Security and Medicare taxes together, taken out of almost every paycheck at fixed rates and matched by your employer.",
+      "see_also": ["Social Security tax", "Medicare tax"]
+    },
+    {
+      "term": "Social Security tax",
+      "aliases": ["Social Security", "OASDI"],
+      "definition": "The part of FICA that funds retirement and disability benefits, charged on your wages up to a yearly limit.",
+      "see_also": ["FICA", "Medicare tax"]
+    },
+    {
+      "term": "Medicare tax",
+      "aliases": ["Medicare"],
+      "definition": "The part of FICA that funds health coverage for people 65 and older, charged on all your wages with no yearly limit.",
+      "see_also": ["FICA", "Social Security tax"]
+    },
+    {
+      "term": "Colorado income tax",
+      "aliases": ["state income tax", "state tax", "Colorado withholding"],
+      "definition": "Colorado taxes income at a single flat rate, and your employer withholds it from each paycheck along with federal income tax.",
+      "see_also": ["Withholding", "FAMLI", "Occupational privilege tax"]
+    },
+    {
+      "term": "FAMLI",
+      "aliases": ["Colorado FAMLI", "Family and Medical Leave Insurance", "paid family leave"],
+      "definition": "Colorado's Family and Medical Leave Insurance program, paid for by a small premium split between you and your employer, which pays part of your wages while you are on leave for a new child, a serious illness, or caring for family.",
+      "see_also": ["Colorado income tax"]
+    },
+    {
+      "term": "Occupational privilege tax",
+      "aliases": ["OPT", "local wage tax", "head tax", "local tax"],
+      "definition": "A flat monthly tax that a few Colorado cities, such as Denver and Aurora, charge people who work there, with part paid by you and part by your employer.",
+      "see_also": ["Colorado income tax"]
+    },
+    {
+      "term": "Premium",
+      "aliases": ["premiums"],
+      "definition": "What you pay each paycheck to have a health, dental, or other insurance plan, whether or not you use it.",
+      "see_also": ["Deductible", "Coverage tier", "Pre-tax deduction"]
+    },
+    {
+      "term": "Deductible",
+      "aliases": ["deductibles"],
+      "definition": "The amount you pay for covered care each year before the plan starts paying its share.",
+      "see_also": ["Out-of-pocket maximum", "Coinsurance", "Premium"]
+    },
+    {
+      "term": "Coinsurance",
+      "aliases": [],
+      "definition": "Your share of a covered bill after you have met the deductible, as a percentage, such as 20%.",
+      "see_also": ["Deductible", "Copay", "Out-of-pocket maximum"]
+    },
+    {
+      "term": "Copay",
+      "aliases": ["copayment", "copays"],
+      "definition": "A fixed amount you pay for a doctor visit or a prescription, with the plan paying the rest.",
+      "see_also": ["Coinsurance", "Deductible"]
+    },
+    {
+      "term": "Out-of-pocket maximum",
+      "aliases": ["out-of-pocket max", "OOP max", "out of pocket maximum"],
+      "definition": "The most you pay for covered care in one plan year, not counting premiums; after you reach it, the plan pays all covered costs.",
+      "see_also": ["Deductible", "Coinsurance", "Plan year"]
+    },
+    {
+      "term": "Coverage tier",
+      "aliases": ["employee only", "employee + spouse", "family coverage", "tier"],
+      "definition": "Who a plan covers, such as you alone, you and a spouse, or your whole family, which sets how much the premium is.",
+      "see_also": ["Premium"]
+    },
+    {
+      "term": "In-network",
+      "aliases": ["network", "out-of-network"],
+      "definition": "Doctors and hospitals that have agreed prices with your plan, so care from them costs you less than care out of network.",
+      "see_also": ["PPO", "Deductible"]
+    },
+    {
+      "term": "PPO",
+      "aliases": ["preferred provider organization"],
+      "definition": "A health plan with a higher premium and a lower deductible that lets you see doctors in or out of its network, paying less in network.",
+      "see_also": ["HDHP", "In-network", "Premium"]
+    },
+    {
+      "term": "HDHP",
+      "aliases": ["high-deductible health plan", "high-deductible plan", "high deductible"],
+      "definition": "A health plan with a lower premium and a higher deductible, and the only kind of plan that lets you put money in an HSA.",
+      "see_also": ["HSA", "PPO", "Deductible"]
+    },
+    {
+      "term": "HSA",
+      "aliases": ["health savings account"],
+      "definition": "A savings account you can have with an HDHP, where money goes in before tax, grows tax-free, and comes out tax-free for medical costs, and it stays yours if you change jobs.",
+      "see_also": ["HDHP", "Employer HSA contribution", "FSA"]
+    },
+    {
+      "term": "Employer HSA contribution",
+      "aliases": ["employer HSA", "HSA seed", "company HSA contribution"],
+      "definition": "Money your employer puts into your HSA each year, on top of what you put in yourself.",
+      "see_also": ["HSA", "Contribution limit"]
+    },
+    {
+      "term": "FSA",
+      "aliases": ["flexible spending account", "health FSA"],
+      "definition": "An account you fund from your paycheck before tax to pay medical costs during the plan year, where money you do not spend by the deadline is mostly lost.",
+      "see_also": ["HSA", "Plan year"]
+    },
+    {
+      "term": "Plan year",
+      "aliases": ["benefit year"],
+      "definition": "The twelve months a benefits choice covers, often January to December, with its own deductible and out-of-pocket maximum.",
+      "see_also": ["Open enrollment", "Deductible"]
+    },
+    {
+      "term": "401(k)",
+      "aliases": ["401k", "traditional 401(k)", "retirement plan"],
+      "definition": "A retirement savings account through your employer, funded straight from your paycheck, where the money grows without tax until you take it out in retirement.",
+      "see_also": ["Roth 401(k)", "Employer match", "Vesting"]
+    },
+    {
+      "term": "Roth 401(k)",
+      "aliases": [],
+      "definition": "The after-tax kind of 401(k): you pay tax on the money now, and it comes out tax-free in retirement.",
+      "see_also": ["401(k)", "Roth IRA", "After-tax deduction"]
+    },
+    {
+      "term": "Roth IRA",
+      "aliases": ["IRA"],
+      "definition": "A retirement account you open yourself, outside work, with after-tax money that comes out tax-free in retirement, and with a yearly limit and an income limit.",
+      "see_also": ["Roth 401(k)", "Contribution limit"]
+    },
+    {
+      "term": "Employer match",
+      "aliases": ["match", "401(k) match", "company match", "matching"],
+      "definition": "Money your employer adds to your 401(k) when you contribute, up to a limit, such as 100% of what you put in up to 6% of your pay.",
+      "see_also": ["401(k)", "Vesting"]
+    },
+    {
+      "term": "Vesting",
+      "aliases": ["vested", "vesting schedule"],
+      "definition": "When money your employer put into your account becomes yours to keep if you leave the job; your own contributions are always yours.",
+      "see_also": ["Employer match", "401(k)"]
+    },
+    {
+      "term": "Contribution limit",
+      "aliases": ["IRS limit", "annual limit"],
+      "definition": "The most the IRS lets you put into an account such as a 401(k), HSA, or IRA in one year; the amounts change each year.",
+      "see_also": ["401(k)", "HSA", "Roth IRA"]
+    },
+    {
+      "term": "Emergency fund",
+      "aliases": ["rainy day fund"],
+      "definition": "Savings set aside for surprises such as a job loss or a car repair, often three to six months of expenses, kept where you can reach it quickly.",
+      "see_also": ["ESPP"]
+    },
+    {
+      "term": "ESPP",
+      "aliases": ["employee stock purchase plan", "company stock", "stock purchase plan"],
+      "definition": "A plan that lets you buy your employer's stock through paycheck deductions, usually at a discount.",
+      "see_also": ["ESPP discount", "Offering period", "Lookback", "Holding period"]
+    },
+    {
+      "term": "ESPP discount",
+      "aliases": ["discount"],
+      "definition": "How far below the market price you pay for ESPP shares, such as 15%.",
+      "see_also": ["ESPP", "Lookback"]
+    },
+    {
+      "term": "Offering period",
+      "aliases": ["purchase period"],
+      "definition": "The stretch of time, often six months, during which your ESPP deductions build up before shares are bought for you.",
+      "see_also": ["ESPP", "Lookback"]
+    },
+    {
+      "term": "Lookback",
+      "aliases": ["look-back", "lookback provision"],
+      "definition": "An ESPP feature that bases your price on the lower of the stock's price at the start or the end of the offering period, then takes the discount off that.",
+      "see_also": ["ESPP", "ESPP discount", "Offering period"]
+    },
+    {
+      "term": "Holding period",
+      "aliases": ["holding rule", "holding requirement"],
+      "definition": "How long you must, or choose to, keep ESPP shares before selling them, which affects both your risk and your taxes.",
+      "see_also": ["ESPP", "Concentration risk"]
+    },
+    {
+      "term": "Concentration risk",
+      "aliases": ["single-stock risk"],
+      "definition": "The risk of having too much of your money in one company, which is worse when it is your employer, since one bad year could cost you your job and your savings at once.",
+      "see_also": ["ESPP", "Holding period"]
+    },
+    {
+      "term": "Open enrollment",
+      "aliases": ["annual enrollment"],
+      "definition": "The yearly window, often in November, when you can change your benefits for the next plan year.",
+      "see_also": ["Enrollment deadline", "Plan year", "Qualifying life event"]
+    },
+    {
+      "term": "Enrollment deadline",
+      "aliases": ["enrollment window", "new hire enrollment"],
+      "definition": "The last day to choose your benefits as a new hire; if you miss it, you may be left with default or no coverage until the next open enrollment.",
+      "see_also": ["Open enrollment", "Qualifying life event"]
+    },
+    {
+      "term": "Qualifying life event",
+      "aliases": ["QLE", "life event"],
+      "definition": "A change such as marriage, a new child, or losing other coverage that lets you change your benefits outside open enrollment.",
+      "see_also": ["Open enrollment", "Enrollment deadline"]
+    }
+  ]
+}
