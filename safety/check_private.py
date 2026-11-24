@@ -69,15 +69,20 @@ def path_problems(path):
     if p.parts and p.parts[0] == "data":
         return ["data/ holds real documents and must never be committed"]
     if p.suffix.lower() in DOCUMENT_EXTENSIONS:
-        if p.parts and p.parts[0] == "samples" and len(p.parts) == 2:
-            spec = ROOT / "samples" / "answers" / f"{p.stem}.json"
-            try:
-                if json.loads(spec.read_text()).get("synthetic") is True:
-                    return []
-            except (OSError, ValueError):
-                pass
-            return [f"sample document has no samples/answers/{p.stem}.json marked \"synthetic\": true"]
-        return ["document or image file: real documents never go in the repo; synthetic ones go in samples/"]
+        # Synthetic documents: samples/<name>.pdf with samples/answers/<name>.json, or the
+        # prompt-injection guide, safety/injection/<name>.pdf with safety/injection/<name>.json.
+        if p.parts[:1] == ("samples",) and len(p.parts) == 2:
+            spec = Path("samples") / "answers" / f"{p.stem}.json"
+        elif p.parts[:2] == ("safety", "injection") and len(p.parts) == 3:
+            spec = Path("safety") / "injection" / f"{p.stem}.json"
+        else:
+            return ["document or image file: real documents never go in the repo; synthetic ones go in samples/"]
+        try:
+            if json.loads((ROOT / spec).read_text()).get("synthetic") is True:
+                return []
+        except (OSError, ValueError):
+            pass
+        return [f"synthetic document has no {spec.as_posix()} marked \"synthetic\": true"]
     return []
 
 

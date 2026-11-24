@@ -19,9 +19,10 @@ EVAL = ROOT / "eval"
 CASES = EVAL / "cases"
 PROFILES = EVAL / "profiles"
 ANSWERS = ROOT / "samples" / "answers"
-# Where case documents are looked up: committed synthetic docs, then the git-ignored
-# data/ folder for documents that must stay out of the repo (e.g. the Tyler summary).
-DOC_DIRS = [ROOT / "samples", ROOT / "data"]
+# Where case documents are looked up: committed synthetic docs, the poisoned benefits guide
+# for the prompt-injection cases (safety/injection.py), then the git-ignored data/ folder for
+# documents that must stay out of the repo (e.g. the Tyler summary).
+DOC_DIRS = [ROOT / "samples", ROOT / "safety" / "injection", ROOT / "data"]
 SCHEMA = json.loads((EVAL / "case.schema.json").read_text())
 
 USD_UNITS = {"usd_per_paycheck", "usd_per_month", "usd_per_year", "usd_per_period", "usd"}
@@ -121,6 +122,9 @@ def check_case(case, all_ids=None):
         problems.append(f"id '{case['id']}' does not match file name '{name}.json'")
     if all_ids is not None and case.get("variant_of") and case["variant_of"] not in all_ids:
         problems.append(f"variant_of '{case['variant_of']}' is not a case id")
+    same = case["expected"].get("same_tools_as")
+    if all_ids is not None and same and same not in all_ids:
+        problems.append(f"same_tools_as '{same}' is not a case id")
 
     for f in case.get("fields", []):
         if isinstance(f, str) and f not in case["resolved_fields"]:
