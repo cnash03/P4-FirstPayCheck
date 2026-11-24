@@ -16,6 +16,7 @@ from contextlib import closing
 from datetime import datetime, timezone
 from pathlib import Path
 
+from extract import extract_fields
 from parse import ParseError, parse_pdf
 from redact import redact_pages
 
@@ -74,9 +75,10 @@ def _now():
 
 
 def ingest_file(path, db_path=None, force=False):
-    """Parse, redact and store one PDF; return a summary with no PII in it.
+    """Parse, redact, store and extract one PDF; return a summary with no PII in it.
 
-    A file with the same name replaces the earlier one, along with its fields.
+    A file with the same name replaces the earlier one, along with its fields, except that a
+    field the user confirmed stays confirmed, value included, if extraction finds it again.
     The same file again is skipped unless force=True.
     """
     path = Path(path)
@@ -87,11 +89,14 @@ def ingest_file(path, db_path=None, force=False):
         old = con.execute("SELECT sha256 FROM documents WHERE doc = ?", (path.name,)).fetchone()
         if old and old["sha256"] == sha and not force:
             n = con.execute("SELECT n_pages FROM documents WHERE doc = ?", (path.name,)).fetchone()[0]
-            return {"doc": path.name, "pages": n, "redactions": {}, "skipped": True}
+            k = con.execute("SELECT count(*) FROM fields WHERE doc = ?", (path.name,)).fetchone()[0]
+            return {"doc": path.name, "pages": n, "fields": k, "redactions": {}, "skipped": True}
 
         # Redact before anything is written.
         pages, counts = redact_pages(parse_pdf(path))
 
+        # The delete cascades to the fields, so keep the confirmed ones to put back after extraction.
+        confirmed = con.execute("SELECT * FROM fields WHERE doc = ? AND status = 'confirmed'", (path.name,)).fetchall()
         con.execute("DELETE FROM documents WHERE doc = ?", (path.name,))   # pages and fields cascade
         con.execute("DELETE FROM pages_fts WHERE doc = ?", (path.name,))
         con.execute("INSERT INTO documents VALUES (?, ?, ?, ?, ?)",
@@ -99,7 +104,16 @@ def ingest_file(path, db_path=None, force=False):
         con.executemany("INSERT INTO pages VALUES (?, ?, ?)", [(path.name, p.page, p.text) for p in pages])
         con.executemany("INSERT INTO pages_fts (text, doc, page) VALUES (?, ?, ?)",
                         [(p.text, path.name, p.page) for p in pages])
-    return {"doc": path.name, "pages": len(pages), "redactions": dict(counts), "skipped": False}
+
+    # Extraction reads the redacted pages, the same text a citation links to.
+    fields = extract_fields(path.name, pages)
+    ids = {f["id"] for f in fields}
+    keep = [tuple(r) for r in confirmed if r["id"] in ids]
+    if keep:
+        with closing(connect(db_path)) as con, con:
+            con.executemany(f"INSERT INTO fields VALUES ({', '.join('?' * len(keep[0]))})", keep)
+    save_fields(fields, db_path)   # skips the confirmed fields just put back
+    return {"doc": path.name, "pages": len(pages), "fields": len(fields), "redactions": dict(counts), "skipped": False}
 
 
 def get_page(doc, page, db_path=None):
