@@ -1,0 +1,150 @@
+{
+  "schema_version": "0.1",
+  "doc": "pay_stub_payroll.pdf",
+  "title": "Payroll Statement",
+  "synthetic": true,
+  "note": "Redaction test file: the same pay as pay_stub.pdf in the layout payroll systems print, with the name in capitals, last name first and unlabeled above the address, a city line with no comma, a file number instead of an employee ID, a masked SSN, and the name and file number repeated on page 2 without labels. Tax lines are illustrative.",
+  "pages": [
+    [
+      {
+        "columns": [
+          "MARCHETTI, RILEY Q<br/>4821 W LARKSPUR AVE APT 4B<br/>GOLDEN CO 80401",
+          "Front Range Civic Software, Inc.<br/>1600 Placeholder Plaza<br/>Denver, CO 80202"
+        ]
+      },
+      {
+        "p": "Company code: FRC<br/>File #: 104823<br/>Social Security #: XXX-XX-3456<br/>Birthdate: 12 April 2001"
+      },
+      {
+        "p": "Period beginning: 01/04/2027<br/>Period ending: 01/17/2027<br/>Pay date: 01/22/2027"
+      },
+      {
+        "table": [
+          [
+            "Earnings and deductions",
+            "Current",
+            "Year to date"
+          ],
+          [
+            "Regular salary",
+            "$3,461.54",
+            "$3,461.54"
+          ],
+          [
+            "Medical (PPO 750) pre-tax",
+            "$62.00",
+            "$62.00"
+          ],
+          [
+            "401(k) 6% pre-tax",
+            "$207.69",
+            "$207.69"
+          ],
+          [
+            "Federal income tax",
+            "$312.40",
+            "$312.40"
+          ],
+          [
+            "Social Security",
+            "$210.77",
+            "$210.77"
+          ],
+          [
+            "Medicare",
+            "$49.29",
+            "$49.29"
+          ],
+          [
+            "Colorado income tax",
+            "$136.00",
+            "$136.00"
+          ],
+          [
+            "Colorado FAMLI",
+            "$15.23",
+            "$15.23"
+          ],
+          [
+            "Denver occupational privilege tax",
+            "$5.75",
+            "$5.75"
+          ],
+          [
+            "Net pay",
+            "$2,462.41",
+            "$2,462.41"
+          ]
+        ]
+      },
+      {
+        "p": "Pay to the order of: RILEY Q MARCHETTI<br/>Deposited to checking account ****0000<br/>Checking acct no. 000123456789"
+      }
+    ],
+    [
+      {
+        "h": "Year-to-date summary"
+      },
+      {
+        "p": "MARCHETTI, R. | File 104823"
+      },
+      {
+        "p": "Riley, your W-4 withholding settings were last changed on 01/04/2027."
+      },
+      {
+        "table": [
+          [
+            "Year to date",
+            "Amount"
+          ],
+          [
+            "Gross pay",
+            "$3,461.54"
+          ],
+          [
+            "Net pay",
+            "$2,462.41"
+          ]
+        ]
+      },
+      {
+        "p": "Questions about this statement: payroll@frontrange-civic.example"
+      }
+    ]
+  ],
+  "pii": [
+    "MARCHETTI",
+    "RILEY",
+    "Riley",
+    "4821 W LARKSPUR AVE APT 4B",
+    "LARKSPUR",
+    "GOLDEN CO 80401",
+    "104823",
+    "XXX-XX-3456",
+    "3456",
+    "12 April 2001",
+    "000123456789"
+  ],
+  "fields": [
+    {
+      "id": "pay_stub_payroll.pdf:paystub.gross_pay",
+      "name": "paystub.gross_pay",
+      "value": 3461.54,
+      "unit": "usd_per_paycheck",
+      "doc": "pay_stub_payroll.pdf",
+      "page": 1,
+      "source_text": "$3,461.54",
+      "status": "unconfirmed"
+    },
+    {
+      "id": "pay_stub_payroll.pdf:paystub.pay_date",
+      "name": "paystub.pay_date",
+      "value": "2027-01-22",
+      "unit": "date",
+      "doc": "pay_stub_payroll.pdf",
+      "page": 1,
+      "source_text": "01/22/2027",
+      "status": "unconfirmed"
+    }
+  ]
+}

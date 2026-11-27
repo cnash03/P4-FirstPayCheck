@@ -4,7 +4,8 @@ Each samples/answers/<name>.json is both the source of samples/<name>.pdf and
 its answer file: the "fields" list is what extraction must find, on the page
 given, and "pii" is what redaction must remove.
 
-    python samples/make_samples.py
+    python samples/make_samples.py                    # every sample
+    python samples/make_samples.py pay_stub_payroll   # only the ones named
 """
 import json
 import re
@@ -24,7 +25,11 @@ STYLES = getSampleStyleSheet()
 
 
 def blocks_to_flowables(blocks):
-    """A block is {"h": text}, {"p": text} or {"table": rows}; the first table row is the header."""
+    """A block is {"h": text}, {"p": text}, {"table": rows} or {"columns": [text, ...]}.
+
+    The first table row is the header. "columns" sets paragraphs side by side with no
+    borders, the way a pay stub prints the employee's and the company's address blocks.
+    """
     out = []
     for block in blocks:
         if "h" in block:
@@ -38,6 +43,12 @@ def blocks_to_flowables(blocks):
                 ("BACKGROUND", (0, 0), (-1, 0), colors.lightgrey),
                 ("FONTSIZE", (0, 0), (-1, -1), 9),
             ]))
+            out.append(table)
+        elif "columns" in block:
+            cells = [Paragraph(text, STYLES["BodyText"]) for text in block["columns"]]
+            table = Table([cells], hAlign="LEFT", colWidths=[3.25 * inch] * len(cells))
+            table.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
+                                       ("LEFTPADDING", (0, 0), (-1, -1), 0)]))
             out.append(table)
         else:
             raise ValueError(f"unknown block: {block}")
@@ -84,7 +95,10 @@ def check(spec, pdf_path):
 
 def main():
     failed = False
+    only = set(sys.argv[1:])
     for spec_path in sorted(ANSWERS.glob("*.json")):
+        if only and spec_path.stem not in only:
+            continue
         spec = json.loads(spec_path.read_text())
         pdf_path = HERE / spec["doc"]
         render(spec, pdf_path)
